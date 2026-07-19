@@ -1,0 +1,84 @@
+{
+  "Nav": {
+    "home": "Home",
+    "khutbahs": "Khutbahs",
+    "sunnah": "Sunnahs of Friday",
+    "recommendedActions": "Recommended Actions",
+    "reminders": "Reminders",
+    "alKahf": "Surah Al-Kahf",
+    "fridayVirtues": "Virtues of Friday",
+    "saved": "Saved",
+    "admin": "Admin Panel"
+  },
+  "Home": {
+    "badge": "Jumma Mubarak",
+    "title": "Jumma Time",
+    "subtitle": "Understand and keep the Friday khutbah in Kazakh, Russian and English",
+    "description": "Scan the QR code at the mosque stand or pick a language to read khutbahs, the sunnahs of Friday, and helpful reminders.",
+    "browseCta": "Browse khutbahs",
+    "qrCta": "Show mosque QR code",
+    "sectionsTitle": "Sections",
+    "latestKhutbahTitle": "This week's khutbah"
+  },
+  "Khutbahs": {
+    "title": "Khutbah catalog",
+    "subtitle": "Friday sermons translated into Kazakh, Russian and English",
+    "searchPlaceholder": "Search by title or date...",
+    "empty": "No khutbahs found",
+    "readMore": "Read khutbah",
+    "dateLabel": "Date"
+  },
+  "KhutbahDetail": {
+    "back": "Back to khutbahs",
+    "save": "Save",
+    "unsave": "Remove from saved",
+    "savedToast": "Khutbah saved",
+    "unsavedToast": "Khutbah removed from saved",
+    "originalNote": "The original was delivered in Kazakh. Translation provided by the mosque.",
+    "notAvailable": "Translation for this language isn't ready yet. Showing the original.",
+    "share": "Share"
+  },
+  "Sunnah": {
+    "title": "Sunnahs of Friday",
+    "subtitle": "Recommended acts narrated from the Prophet ﷺ"
+  },
+  "RecommendedActions": {
+    "title": "Recommended Actions",
+    "subtitle": "What is good to do on Friday"
+  },
+  "Reminders": {
+    "title": "Reminders",
+    "subtitle": "Important reminders and events"
+  },
+  "AlKahf": {
+    "title": "Surah Al-Kahf",
+    "subtitle": "Reading Surah Al-Kahf every Friday — a light between the two Fridays",
+    "readFullSurah": "Read the full surah on Quran.com"
+  },
+  "FridayVirtues": {
+    "title": "Virtues of Friday",
+    "subtitle": "Why Friday is the best day of the week"
+  },
+  "Saved": {
+    "title": "Saved khutbahs",
+    "empty": "You haven't saved any khutbahs yet",
+    "browseCta": "Go to catalog"
+  },
+  "Sections": {
+    "khutbahs": "Read Friday sermons in three languages",
+    "sunnah": "Recommended acts for Friday",
+    "recommendedActions": "A helpful list of things to do today",
+    "reminders": "Don't miss what matters",
+    "alKahf": "The surah text for Friday reading",
+    "fridayVirtues": "Why this day is special"
+  },
+  "Footer": {
+    "tagline": "A platform for mosques in Kazakhstan",
+    "rights": "All rights reserved"
+  },
+  "Common": {
+    "minutesRead": "{minutes} min read",
+    "loading": "Loading...",
+    "language": "Language"
+  }
+}

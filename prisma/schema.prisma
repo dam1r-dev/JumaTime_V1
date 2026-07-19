@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum ContentCategory {
+  SUNNAH
+  RECOMMENDED_ACTION
+  REMINDER
+  FRIDAY_VIRTUE
+  AL_KAHF
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+model Khutbah {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  date          DateTime
+  published     Boolean  @default(true)
+  originalLocale String  @default("kk")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  translations KhutbahTranslation[]
+
+  @@index([date])
+}
+
+model KhutbahTranslation {
+  id        String  @id @default(cuid())
+  khutbahId String
+  locale    String
+  title     String
+  summary   String
+  body      String
+
+  khutbah Khutbah @relation(fields: [khutbahId], references: [id], onDelete: Cascade)
+
+  @@unique([khutbahId, locale])
+}
+
+model ContentBlock {
+  id        String          @id @default(cuid())
+  category  ContentCategory
+  order     Int             @default(0)
+  published Boolean         @default(true)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  translations ContentTranslation[]
+
+  @@index([category, order])
+}
+
+model ContentTranslation {
+  id             String @id @default(cuid())
+  contentBlockId String
+  locale         String
+  title          String
+  body           String
+
+  contentBlock ContentBlock @relation(fields: [contentBlockId], references: [id], onDelete: Cascade)
+
+  @@unique([contentBlockId, locale])
+}
