@@ -55,6 +55,29 @@ model KhutbahTranslation {
   @@unique([khutbahId, locale])
 }
 
+model QuranAyah {
+  id              String   @id @default(cuid())
+  surahNumber     Int
+  ayahNumber      Int
+  textArabic      String
+  transliteration String
+
+  translations QuranAyahTranslation[]
+
+  @@unique([surahNumber, ayahNumber])
+}
+
+model QuranAyahTranslation {
+  id      String @id @default(cuid())
+  ayahId  String
+  locale  String
+  text    String
+
+  ayah QuranAyah @relation(fields: [ayahId], references: [id], onDelete: Cascade)
+
+  @@unique([ayahId, locale])
+}
+
 model ContentBlock {
   id        String          @id @default(cuid())
   category  ContentCategory

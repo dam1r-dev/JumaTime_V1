@@ -2,6 +2,7 @@ import "dotenv/config";
 import bcrypt from "bcryptjs";
 import { PrismaClient } from "../src/generated/prisma/client";
 import { PrismaLibSql } from "@prisma/adapter-libsql";
+import alKahfAyahs from "./data/al-kahf.json";
 
 const adapter = new PrismaLibSql({ url: process.env.DATABASE_URL! });
 const prisma = new PrismaClient({ adapter });
@@ -23,6 +24,8 @@ async function main() {
   await prisma.khutbah.deleteMany();
   await prisma.contentTranslation.deleteMany();
   await prisma.contentBlock.deleteMany();
+  await prisma.quranAyahTranslation.deleteMany();
+  await prisma.quranAyah.deleteMany();
 
   const khutbahs = [
     {
@@ -106,6 +109,87 @@ async function main() {
         },
       ],
     },
+    {
+      slug: "ata-ana-2026-07-24",
+      date: new Date("2026-07-24"),
+      originalLocale: "kk",
+      translations: [
+        {
+          locale: "kk",
+          title: "Ата-анаға жақсылық жасау",
+          summary:
+            "Ата-ана алдындағы парыз бен олармен қарым-қатынасты жақсартудың сауабы туралы хұтба.",
+          body: "Бисмиллаһир-Рахманир-Рахим.\n\nҚадірлі мұсылман бауырлар! Аллаһ Тағала Құран Кәрімде Өзіне құлшылық етуден кейін бірден ата-анаға жақсылық жасауды бұйырады: «Раббың тек қана Өзіне құлшылық етуді және ата-анаға жақсылық жасауды үкім етті» (Исра сүресі, 23-аят).\n\nБір сахаба Пайғамбарымыздан ﷺ: «Кімге жақсылық жасауым керектігі?» деп сұрағанда, ол үш рет «Анаңа» деп жауап беріп, төртінші рет қана «Әкеңе» деген. Бұл — ана орнының исламда қаншалықты жоғары екенін көрсетеді.\n\nАта-анаға жақсылық — тек материалдық көмек емес. Оларға жұмсақ сөйлеу, дауыс көтермеу, кеңесіне құлақ асу, кәрілік шағында қамқорлық жасау — осының бәрі парыз.\n\nПайғамбарымыз ﷺ: «Ата-анасына жеткен, содан кейін жәннатқа кірмеген адамның мұрны жерге тиіп қалсын» деп үш рет қайталаған. Бұл — ата-ана ризалығының ақиретте қаншалықты маңызды екенін ескертетін қатаң сөз.\n\nБүгіннен бастап ата-анамызға көбірек хабарласайық, оларға уақыт бөлейік, дұғаларымызда ұмытпайық.\n\nАллаһ Тағала бәрімізді ата-анасына жақсылық жасаушылардан етсін.",
+        },
+        {
+          locale: "ru",
+          title: "Благочестие к родителям",
+          summary:
+            "Хутба о долге перед родителями и о награде за укрепление отношений с ними.",
+          body: "Бисмилляхи-р-Рахмани-р-Рахим.\n\nДорогие братья и сестры! Аллах Всевышний в Коране повелевает делать добро родителям сразу же после поклонения Ему: «Господь твой повелел, чтобы вы поклонялись только Ему и делали добро родителям» (сура «Аль-Исра», 23).\n\nКогда один из сподвижников спросил Пророка ﷺ, к кому он должен относиться лучше всего, тот трижды ответил: «К твоей матери», и лишь в четвёртый раз сказал: «К твоему отцу». Это показывает, насколько высоко в исламе положение матери.\n\nБлагочестие к родителям — это не только материальная помощь. Это мягкая речь, отсутствие повышенного тона, прислушивание к их советам и забота о них в старости.\n\nПророк ﷺ трижды повторил: «Да будет унижен тот, кто застал своих родителей — одного из них или обоих — в старости, и это не привело его в Рай». Это суровое напоминание о том, насколько важно довольство родителей для нашей вечной жизни.\n\nНачнём с сегодняшнего дня чаще звонить родителям, уделять им время и не забывать о них в своих молитвах.\n\nПусть Аллах сделает всех нас благочестивыми по отношению к своим родителям.",
+        },
+        {
+          locale: "en",
+          title: "Kindness to Parents",
+          summary:
+            "A khutbah on our duty toward our parents and the reward for strengthening ties with them.",
+          body: "Bismillahir-Rahmanir-Rahim.\n\nDear brothers and sisters! In the Qur'an, Allah the Almighty commands kindness to parents immediately after commanding worship of Him alone: \"Your Lord has decreed that you worship none but Him, and that you be kind to parents\" (Surah Al-Isra, 23).\n\nWhen a companion asked the Prophet ﷺ who most deserved his good companionship, he answered three times, \"Your mother,\" and only on the fourth time said, \"Your father.\" This shows how exalted the status of the mother is in Islam.\n\nKindness to parents is not only material support. It is speaking gently, never raising one's voice at them, listening to their counsel, and caring for them in old age.\n\nThe Prophet ﷺ said three times: \"Humiliated is the one who found one or both of his parents in old age and it did not lead him into Paradise.\" This is a stern reminder of how central our parents' pleasure is to our life in the Hereafter.\n\nLet us start today by calling our parents more often, giving them our time, and remembering them in our prayers.\n\nMay Allah make all of us dutiful toward our parents.",
+        },
+      ],
+    },
+    {
+      slug: "amanat-2026-07-31",
+      date: new Date("2026-07-31"),
+      originalLocale: "kk",
+      translations: [
+        {
+          locale: "kk",
+          title: "Аманат пен шыншылдық",
+          summary:
+            "Сауда-саттықта, сөзде және іс-әрекетте аманатты сақтау мен шыншыл болудың маңызы туралы хұтба.",
+          body: "Бисмиллаһир-Рахманир-Рахим.\n\nҚадірлі мұсылман бауырлар! Аманат пен шыншылдық — мұсылманның ажырамас қасиеттерінің бірі. Аллаһ Тағала: «Аллаһ сендерге аманаттарды иелеріне қайтаруды бұйырады» дейді (Ниса сүресі, 58-аят).\n\nПайғамбарымыз ﷺ: «Шыншыл әрі сенімді саудагер пайғамбарлармен, шыншылдармен және шейіттермен бірге болады» деген. Бұл — сауда-саттықта адалдықтың қаншалықты жоғары бағаланатынын көрсетеді.\n\nАманат — тек материалдық зат емес. Уәдені орындау, құпияны сақтау, лауазымды әділ пайдалану, өлшем мен таразыда алдамау — осының бәрі аманатқа кіреді.\n\nМунафиктің үш белгісінің бірі — сөйлегенде өтірік айту, уәде бергенде бұзу, аманат етілгенде опасыздық жасау деп Пайғамбарымыз ﷺ ескерткен. Бұл сипаттардан аулақ болуға тырысайық.\n\nШыншылдық — тар жол болса да, ақыр соңында құтқарады. Өтірік — жеңіл көрінгенімен, апатқа апарады.\n\nАллаһ Тағала бізді аманатшыл әрі шыншыл құлдарынан етсін.",
+        },
+        {
+          locale: "ru",
+          title: "Доверие и правдивость",
+          summary:
+            "Хутба о важности хранить доверенное и быть правдивым в торговле, речи и поступках.",
+          body: "Бисмилляхи-р-Рахмани-р-Рахим.\n\nДорогие братья и сестры! Доверие (амана) и правдивость — неотъемлемые качества мусульманина. Аллах Всевышний говорит: «Аллах повелевает вам возвращать вверенное на хранение имущество его владельцам» (сура «Ан-Ниса», 58).\n\nПророк ﷺ сказал: «Правдивый и честный торговец будет вместе с пророками, правдивыми и мучениками». Это показывает, насколько высоко ценится честность в торговых делах.\n\nДоверие — это не только материальные вещи. Выполнение обещаний, хранение тайн, справедливое использование должности, отсутствие обмана в мере и весе — всё это часть амана.\n\nПророк ﷺ предупредил, что один из трёх признаков лицемера — это ложь в речи, нарушение обещания и предательство доверенного. Постараемся держаться подальше от этих качеств.\n\nПравдивость, даже если путь узок, в конце концов спасает. Ложь, даже если кажется лёгкой, ведёт к беде.\n\nПусть Аллах сделает нас Своими рабами, хранящими доверенное и правдивыми.",
+        },
+        {
+          locale: "en",
+          title: "Trust and Truthfulness",
+          summary:
+            "A khutbah on the importance of honoring what is entrusted to us and being truthful in trade, speech, and deeds.",
+          body: "Bismillahir-Rahmanir-Rahim.\n\nDear brothers and sisters! Trustworthiness (amanah) and truthfulness are inseparable qualities of a believer. Allah the Almighty says: \"Indeed, Allah commands you to render trusts to whom they are due\" (Surah An-Nisa, 58).\n\nThe Prophet ﷺ said: \"The truthful, trustworthy merchant will be with the prophets, the truthful, and the martyrs.\" This shows how highly honesty in trade is valued.\n\nTrust is not only about material things. Keeping promises, guarding secrets, using one's position fairly, and not cheating in measure and weight — all of this falls under amanah.\n\nThe Prophet ﷺ warned that among the signs of a hypocrite are lying in speech, breaking promises, and betraying what is entrusted. Let us strive to stay far from these traits.\n\nTruthfulness, even when the path is narrow, ultimately saves a person. Falsehood, even when it seems easy, leads to ruin.\n\nMay Allah make us among His servants who are trustworthy and truthful.",
+        },
+      ],
+    },
+    {
+      slug: "gaybat-2026-08-07",
+      date: new Date("2026-08-07"),
+      originalLocale: "kk",
+      translations: [
+        {
+          locale: "kk",
+          title: "Ғайбаттан аулақ болу",
+          summary: "Артынан сөйлеу мен өсек-аяңның зияны және одан сақтанудың жолдары туралы хұтба.",
+          body: "Бисмиллаһир-Рахманир-Рахим.\n\nҚадірлі мұсылман бауырлар! Ғайбат — яғни, адамның артынан оған ұнамайтын нәрсені айту — исламда қатаң тыйым салынған үлкен күнәлардың бірі. Аллаһ Тағала Құранда мұны өлген бауырының етін жеумен теңейді: «Сендердің кейбіреуің бауырының өлі етін жегісі келе ме? Бұдан жиіркенесіңдер ғой!» (Хужурат сүресі, 12-аят).\n\nБұл теңеу — ғайбаттың адам жанына қаншалықты жат әрі жиіркенішті екенін көрсетеді. Дегенмен, бүгінгі күні бұл күнә әңгіме-дүкен арасында, тіпті әзіл ретінде де жиі кездеседі.\n\nПайғамбарымыз ﷺ: «Мұсылман — мұсылманның тілінен және қолынан басқа мұсылмандар аман болатын кісі» деген. Тіліміз бен жазуымызды бақылауымыз керек, әсіресе әлеуметтік желілерде.\n\nҒайбаттан сақтанудың жолы — біреу туралы жаман сөз айтылғанда тыңдамай, тақырыпты ауыстыру, немесе сол адамды жақсы сөзбен қорғау. Егер өзіміз айтып қойсақ, кешірім сұрап, тәубе етуіміз керек.\n\nТілімізді сақтау — иманымыздың бір белгісі. Көбірек сөйлегеннен гөрі, көбірек ойланып сөйлейік.\n\nАллаһ Тағала бізді тілін сақтаған құлдарынан етсін.",
+        },
+        {
+          locale: "ru",
+          title: "Остерегаться сплетен",
+          summary: "Хутба о вреде злословия за спиной и о том, как уберечься от этого греха.",
+          body: "Бисмилляхи-р-Рахмани-р-Рахим.\n\nДорогие братья и сестры! Гыйба — то есть упоминание человека в его отсутствие в том, что ему не понравилось бы, — один из тяжких грехов, строго запрещённых в исламе. Аллах Всевышний в Коране сравнивает это с поеданием мяса умершего брата: «Разве понравится кому-нибудь из вас есть мясо своего покойного брата? Вы ведь испытываете к этому отвращение» (сура «Аль-Худжурат», 12).\n\nЭто сравнение показывает, насколько сплетни чужды и отвратительны человеческой душе. Тем не менее, сегодня этот грех часто встречается в разговорах и даже в шутках.\n\nПророк ﷺ сказал: «Мусульманин — это тот, от чьего языка и рук другие мусульмане находятся в безопасности». Нам следует следить за своим языком и за тем, что мы пишем, особенно в социальных сетях.\n\nСпастись от гыйбы можно, не слушая плохие слова о ком-то, меняя тему разговора или заступаясь за этого человека добрым словом. Если же мы сами это сказали, нужно попросить прощения и раскаяться.\n\nХранение языка — один из признаков веры. Будем говорить меньше, но обдуманнее.\n\nПусть Аллах сделает нас из числа тех, кто хранит свой язык.",
+        },
+        {
+          locale: "en",
+          title: "Guarding Against Backbiting",
+          summary: "A khutbah on the harm of speaking ill of others behind their backs and how to avoid this sin.",
+          body: "Bismillahir-Rahmanir-Rahim.\n\nDear brothers and sisters! Backbiting (gheebah) — mentioning someone in their absence in a way they would dislike — is one of the major sins strictly forbidden in Islam. Allah the Almighty compares it in the Qur'an to eating the flesh of one's dead brother: \"Would one of you like to eat the flesh of his dead brother? You would detest it\" (Surah Al-Hujurat, 12).\n\nThis comparison shows how foreign and repulsive backbiting is to the human soul. Yet today this sin is common in everyday conversation, even disguised as humor.\n\nThe Prophet ﷺ said: \"A Muslim is the one from whose tongue and hand other Muslims are safe.\" We must watch our tongues and what we write, especially on social media.\n\nOne can guard against backbiting by refusing to listen to ill words about someone, changing the subject, or defending that person with a kind word. If we have already spoken ill of someone, we should seek forgiveness and repent.\n\nGuarding one's tongue is a sign of faith. Let us speak less, and speak with more thought.\n\nMay Allah make us among those who guard their tongues.",
+        },
+      ],
+    },
   ];
 
   for (const k of khutbahs) {
@@ -120,6 +204,24 @@ async function main() {
     });
   }
   console.log(`Seeded ${khutbahs.length} khutbahs`);
+
+  for (const ayah of alKahfAyahs) {
+    await prisma.quranAyah.create({
+      data: {
+        surahNumber: 18,
+        ayahNumber: ayah.number,
+        textArabic: ayah.arabic,
+        transliteration: ayah.transliteration,
+        translations: {
+          create: [
+            { locale: "ru", text: ayah.ru },
+            { locale: "en", text: ayah.en },
+          ],
+        },
+      },
+    });
+  }
+  console.log(`Seeded ${alKahfAyahs.length} Al-Kahf ayahs`);
 
   type Block = {
     category: "SUNNAH" | "RECOMMENDED_ACTION" | "REMINDER" | "FRIDAY_VIRTUE" | "AL_KAHF";

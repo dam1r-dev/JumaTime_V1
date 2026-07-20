@@ -53,7 +53,9 @@
   "AlKahf": {
     "title": "Сура Аль-Кахф",
     "subtitle": "Чтение суры Аль-Кахф по пятницам — свет между двумя пятницами",
-    "readFullSurah": "Читать полный текст суры на Quran.com"
+    "transliteration": "Транскрипция",
+    "translation": "Перевод",
+    "openExternal": "Открыть на Quran.com"
   },
   "FridayVirtues": {
     "title": "Достоинства пятничного дня",

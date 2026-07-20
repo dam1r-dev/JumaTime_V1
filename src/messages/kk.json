@@ -53,7 +53,9 @@
   "AlKahf": {
     "title": "Әл-Кахф сүресі",
     "subtitle": "Жұма сайын Әл-Кахф сүресін оқу — екі жұманың арасындағы нұр",
-    "readFullSurah": "Сүренің толық мәтінін Quran.com сайтынан оқу"
+    "transliteration": "Транскрипция",
+    "translation": "Аударма",
+    "openExternal": "Quran.com сайтында ашу"
   },
   "FridayVirtues": {
     "title": "Жұма күнінің қадір-қасиеті",

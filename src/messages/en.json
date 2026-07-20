@@ -53,7 +53,9 @@
   "AlKahf": {
     "title": "Surah Al-Kahf",
     "subtitle": "Reading Surah Al-Kahf every Friday — a light between the two Fridays",
-    "readFullSurah": "Read the full surah on Quran.com"
+    "transliteration": "Transliteration",
+    "translation": "Translation",
+    "openExternal": "Open on Quran.com"
   },
   "FridayVirtues": {
     "title": "Virtues of Friday",
