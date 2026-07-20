@@ -32,7 +32,7 @@ export function LocaleSwitcher() {
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
-          <Button variant="outline" size="sm" className="gap-1.5" aria-label={t("language")}>
+          <Button variant="outline" size="sm" className="gap-1.5 text-foreground" aria-label={t("language")}>
             <Globe className="size-4" />
             {localeNames[locale as Locale]}
           </Button>
@@ -42,7 +42,7 @@ export function LocaleSwitcher() {
         {routing.locales.map((l) => (
           <DropdownMenuItem
             key={l}
-            onSelect={() => onSelect(l)}
+            onClick={() => onSelect(l)}
             className={l === locale ? "font-semibold" : undefined}
           >
             {localeNames[l]}
