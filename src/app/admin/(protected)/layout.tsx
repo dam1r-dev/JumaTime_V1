@@ -5,7 +5,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { Logo } from "@/components/site/logo";
 import { Button } from "@/components/ui/button";
-import { logoutAction } from "./actions";
+import { logoutAction } from "@/lib/auth-actions";
 
 export default async function AdminProtectedLayout({
   children,
