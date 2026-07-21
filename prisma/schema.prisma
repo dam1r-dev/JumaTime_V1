@@ -24,6 +24,7 @@ model Mosque {
   id        String   @id @default(cuid())
   slug      String   @unique
   name      String
+  logoUrl   String?
   order     Int      @default(0)
   createdAt DateTime @default(now())
 

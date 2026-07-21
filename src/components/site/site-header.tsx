@@ -21,7 +21,7 @@ export async function SiteHeader({ locale }: { locale: Locale }) {
   ];
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/70 bg-[var(--jt-green-900)] text-white">
+    <header className="sticky top-0 z-40 border-b border-border/70 bg-[var(--jt-green-900)] text-white print:hidden">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
         <Link href="/" className="text-white">
           <Logo />

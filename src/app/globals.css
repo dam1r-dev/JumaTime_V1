@@ -142,6 +142,13 @@
   }
 }
 
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+}
+
 @layer utilities {
   .font-arabic {
     font-family: var(--font-arabic), serif;

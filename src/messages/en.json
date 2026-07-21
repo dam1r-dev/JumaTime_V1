@@ -18,7 +18,9 @@
     "browseCta": "Browse khutbahs",
     "qrCta": "Show mosque QR code",
     "sectionsTitle": "Sections",
-    "latestKhutbahTitle": "This week's khutbah"
+    "latestKhutbahTitle": "This week's khutbah",
+  "imamLabel": "Imam",
+  "officialBadge": "Official mosque page"
   },
   "Khutbahs": {
     "title": "Khutbah catalog",
@@ -36,7 +38,10 @@
     "unsavedToast": "Khutbah removed from saved",
     "originalNote": "The original was delivered in Kazakh. Translation provided by the mosque.",
     "notAvailable": "Translation for this language isn't ready yet. Showing the original.",
-    "share": "Share"
+    "share": "Share",
+  "print": "Print",
+  "fontDecrease": "Decrease font size",
+  "fontIncrease": "Increase font size"
   },
   "Sunnah": {
     "title": "Sunnahs of Friday",

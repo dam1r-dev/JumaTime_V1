@@ -36,13 +36,13 @@ async function main() {
       mosqueId: baiken.id,
       email: process.env.SEED_ADMIN_EMAIL ?? "imam@jummatime.kz",
       password: process.env.SEED_ADMIN_PASSWORD ?? "ChangeMe123!",
-      name: process.env.SEED_ADMIN_NAME ?? "Имам",
+      name: process.env.SEED_ADMIN_NAME ?? "Асхат Жанұзақов",
     },
     {
       mosqueId: abuBakr.id,
       email: process.env.SEED_ADMIN2_EMAIL ?? "imam2@jummatime.kz",
       password: process.env.SEED_ADMIN2_PASSWORD ?? "ChangeMe123!",
-      name: process.env.SEED_ADMIN2_NAME ?? "Имам 2",
+      name: process.env.SEED_ADMIN2_NAME ?? "Ерлан Қасымов",
     },
   ];
   for (const a of admins) {

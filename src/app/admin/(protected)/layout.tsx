@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import NextLink from "next/link";
-import { BookOpen, LayoutDashboard, ListChecks, LogOut } from "lucide-react";
+import { BookOpen, LayoutDashboard, ListChecks, LogOut, Settings } from "lucide-react";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { isSessionValid } from "@/lib/session-version";
@@ -22,6 +22,7 @@ export default async function AdminProtectedLayout({
     { href: "/admin", label: "Обзор", icon: LayoutDashboard },
     { href: "/admin/khutbahs", label: "Хутбы", icon: BookOpen },
     { href: "/admin/content", label: "Разделы сайта", icon: ListChecks },
+    { href: "/admin/settings", label: "Настройки", icon: Settings },
   ];
 
   return (

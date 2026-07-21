@@ -17,6 +17,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { localeNames, locales, type Locale } from "@/i18n/routing";
 import { buildSlug } from "@/lib/slugify";
 import type { KhutbahFormState } from "./actions";
+import { KhutbahPreviewDialog } from "./khutbah-preview-dialog";
 
 type Translation = { locale: string; title: string; summary: string; body: string };
 
@@ -40,11 +41,14 @@ export function KhutbahForm({
 
   const [date, setDate] = useState(initial?.date ?? "");
   const [slug, setSlug] = useState(initial?.slug ?? "");
-  const [fields, setFields] = useState<Record<Locale, { title: string; body: string }>>(() => {
-    const entry = {} as Record<Locale, { title: string; body: string }>;
+  const [activeLocale, setActiveLocale] = useState<Locale>("kk");
+  const [fields, setFields] = useState<
+    Record<Locale, { title: string; summary: string; body: string }>
+  >(() => {
+    const entry = {} as Record<Locale, { title: string; summary: string; body: string }>;
     for (const l of locales) {
       const t = translationFor(l);
-      entry[l] = { title: t?.title ?? "", body: t?.body ?? "" };
+      entry[l] = { title: t?.title ?? "", summary: t?.summary ?? "", body: t?.body ?? "" };
     }
     return entry;
   });
@@ -52,7 +56,7 @@ export function KhutbahForm({
   const isFilled = (l: Locale) => fields[l].title.trim() !== "" && fields[l].body.trim() !== "";
   const filledCount = locales.filter(isFilled).length;
 
-  function updateField(l: Locale, key: "title" | "body", value: string) {
+  function updateField(l: Locale, key: "title" | "summary" | "body", value: string) {
     setFields((prev) => ({ ...prev, [l]: { ...prev[l], [key]: value } }));
   }
 
@@ -141,7 +145,10 @@ export function KhutbahForm({
           сайт покажет этот же текст с пометкой «перевод пока не готов», пока вы не добавите
           перевод. Языки с галочкой уже готовы: заполнено {filledCount} из {locales.length}.
         </p>
-        <Tabs defaultValue="kk">
+        <Tabs
+          value={activeLocale}
+          onValueChange={(value) => setActiveLocale(value as Locale)}
+        >
           <TabsList>
             {locales.map((l) => (
               <TabsTrigger key={l} value={l} className="gap-1.5">
@@ -167,7 +174,8 @@ export function KhutbahForm({
                 <Textarea
                   id={`summary_${l}`}
                   name={`summary_${l}`}
-                  defaultValue={translationFor(l)?.summary}
+                  value={fields[l].summary}
+                  onChange={(e) => updateField(l, "summary", e.target.value)}
                   placeholder="1-2 предложения — показывается в списке хутб"
                   rows={2}
                 />
@@ -181,6 +189,15 @@ export function KhutbahForm({
                   onChange={(e) => updateField(l, "body", e.target.value)}
                   placeholder="Полный текст хутбы на этом языке"
                   rows={14}
+                />
+              </div>
+              <div>
+                <KhutbahPreviewDialog
+                  locale={l}
+                  date={date}
+                  title={fields[l].title}
+                  summary={fields[l].summary}
+                  body={fields[l].body}
                 />
               </div>
             </TabsContent>

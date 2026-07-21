@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import {
   BookOpen,
@@ -7,6 +8,8 @@ import {
   Sparkles,
   BookMarked,
   QrCode,
+  Building2,
+  BadgeCheck,
 } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
@@ -28,7 +31,7 @@ export default async function HomePage({
 
   const mosque = await getCurrentMosque(await getMosques());
 
-  const [t, home, sectionDesc, latest] = await Promise.all([
+  const [t, home, sectionDesc, latest, imam] = await Promise.all([
     getTranslations({ locale, namespace: "Nav" }),
     getTranslations({ locale, namespace: "Home" }),
     getTranslations({ locale, namespace: "Sections" }),
@@ -38,6 +41,9 @@ export default async function HomePage({
           orderBy: { date: "desc" },
           include: { translations: true },
         })
+      : null,
+    mosque
+      ? prisma.adminUser.findFirst({ where: { mosqueId: mosque.id }, select: { name: true } })
       : null,
   ]);
 
@@ -87,6 +93,39 @@ export default async function HomePage({
           </div>
         </div>
       </section>
+
+      {mosque && (
+        <section className="border-b border-border bg-card">
+          <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-4 px-4 py-4">
+            {mosque.logoUrl ? (
+              <Image
+                src={mosque.logoUrl}
+                alt={mosque.name}
+                width={48}
+                height={48}
+                unoptimized
+                className="size-12 shrink-0 rounded-full object-cover ring-1 ring-border"
+              />
+            ) : (
+              <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-[var(--jt-green-100)] text-[var(--jt-green-900)]">
+                <Building2 className="size-6" />
+              </div>
+            )}
+            <div className="min-w-0">
+              <p className="truncate font-semibold">{mosque.name}</p>
+              {imam?.name && (
+                <p className="truncate text-sm text-muted-foreground">
+                  {home("imamLabel")}: {imam.name}
+                </p>
+              )}
+            </div>
+            <Badge variant="secondary" className="ml-auto gap-1 whitespace-nowrap">
+              <BadgeCheck className="size-3.5" />
+              {home("officialBadge")}
+            </Badge>
+          </div>
+        </section>
+      )}
 
       {latest && latestContent && (
         <section className="mx-auto max-w-6xl px-4 py-10">

@@ -7,7 +7,7 @@ export async function SiteFooter({ locale }: { locale: Locale }) {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-border bg-[var(--jt-green-950)] text-white/70">
+    <footer className="print:hidden border-t border-border bg-[var(--jt-green-950)] text-white/70">
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-2 px-4 py-8 text-center text-sm">
         <Logo className="text-white" />
         <p>{t("tagline")}</p>
