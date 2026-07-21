@@ -3,6 +3,7 @@ import NextLink from "next/link";
 import { BookOpen, LayoutDashboard, ListChecks, LogOut } from "lucide-react";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { isSessionValid } from "@/lib/session-version";
 import { Logo } from "@/components/site/logo";
 import { Button } from "@/components/ui/button";
 import { logoutAction } from "@/lib/auth-actions";
@@ -13,9 +14,7 @@ export default async function AdminProtectedLayout({
   children: React.ReactNode;
 }) {
   const session = await auth();
-  // A session minted before mosqueId was added to the JWT (or a stale/invalid one)
-  // won't have it — treat that the same as logged out rather than crashing below.
-  if (!session || !session.user.mosqueId) redirect("/admin/login");
+  if (!isSessionValid(session)) redirect("/admin/login");
 
   const mosque = await prisma.mosque.findUnique({ where: { id: session.user.mosqueId } });
 

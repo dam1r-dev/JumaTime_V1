@@ -2,9 +2,12 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
+import { SESSION_VERSION } from "@/lib/session-version";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  session: { strategy: "jwt" },
+  // Short-lived on purpose: this is a shared admin device at the mosque, not a
+  // personal one — a session left open shouldn't stay valid indefinitely.
+  session: { strategy: "jwt", maxAge: 60 * 60 * 24 },
   pages: { signIn: "/admin/login" },
   providers: [
     Credentials({
@@ -34,6 +37,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         token.id = user.id;
         token.mosqueId = (user as { mosqueId: string }).mosqueId;
+        token.v = SESSION_VERSION;
       }
       return token;
     },
@@ -42,6 +46,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.id = token.id as string;
         session.user.mosqueId = token.mosqueId as string;
       }
+      session.version = token.v as number;
       return session;
     },
   },

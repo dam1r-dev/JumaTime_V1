@@ -2,16 +2,17 @@ import { redirect } from "next/navigation";
 import { LogOut } from "lucide-react";
 import { auth } from "@/auth";
 import { logoutAction } from "@/lib/auth-actions";
+import { isSessionValid } from "@/lib/session-version";
 import { Logo } from "@/components/site/logo";
 import { Button } from "@/components/ui/button";
 import { LoginForm } from "./login-form";
 
 export default async function AdminLoginPage() {
   const session = await auth();
-  // A session cookie minted before mosqueId existed on the JWT (or otherwise
-  // invalid) must NOT count as logged in here, or this page and the /admin
-  // layout redirect to each other forever (layout sends it back here).
-  if (session && session.user.mosqueId) redirect("/admin");
+  // A session must pass the same validity check as the /admin layout, or
+  // this page and the layout redirect to each other forever for a session
+  // that exists but is stale/outdated (see src/lib/session-version.ts).
+  if (isSessionValid(session)) redirect("/admin");
 
   return (
     <div className="flex flex-1 items-center justify-center bg-[var(--jt-green-950)] px-4 py-16">
@@ -24,8 +25,7 @@ export default async function AdminLoginPage() {
         {session && (
           <div className="mb-4 rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/80">
             <p>
-              Найдена старая сессия ({session.user.email}) без привязки к мечети — нужно
-              выйти и войти заново.
+              Найдена устаревшая сессия ({session.user.email}) — нужно выйти и войти заново.
             </p>
             <form action={logoutAction} className="mt-3">
               <Button
