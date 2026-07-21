@@ -251,6 +251,7 @@ async function main() {
         transliteration: ayah.transliteration,
         translations: {
           create: [
+            { locale: "kk", text: ayah.kk },
             { locale: "ru", text: ayah.ru },
             { locale: "en", text: ayah.en },
           ],
