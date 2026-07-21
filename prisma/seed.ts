@@ -8,27 +8,56 @@ const adapter = new PrismaLibSql({ url: process.env.DATABASE_URL! });
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  const adminEmail = process.env.SEED_ADMIN_EMAIL ?? "imam@jummatime.kz";
-  const adminPassword = process.env.SEED_ADMIN_PASSWORD ?? "ChangeMe123!";
-  const adminName = process.env.SEED_ADMIN_NAME ?? "Имам";
-
-  const passwordHash = await bcrypt.hash(adminPassword, 10);
-  await prisma.adminUser.upsert({
-    where: { email: adminEmail },
-    update: {},
-    create: { email: adminEmail, name: adminName, passwordHash },
-  });
-  console.log(`Admin user ready: ${adminEmail}`);
-
   await prisma.khutbahTranslation.deleteMany();
   await prisma.khutbah.deleteMany();
   await prisma.contentTranslation.deleteMany();
   await prisma.contentBlock.deleteMany();
   await prisma.quranAyahTranslation.deleteMany();
   await prisma.quranAyah.deleteMany();
+  await prisma.adminUser.deleteMany();
+  await prisma.mosque.deleteMany();
+
+  const mosques = [
+    { slug: "baiken", name: "Мечеть Байкен", order: 1 },
+    { slug: "abu-bakr", name: "Мечеть Абу-Бакр", order: 2 },
+  ];
+  for (const m of mosques) {
+    await prisma.mosque.create({ data: m });
+  }
+  console.log(`Seeded ${mosques.length} mosques`);
+
+  const baiken = await prisma.mosque.findUniqueOrThrow({ where: { slug: "baiken" } });
+  const abuBakr = await prisma.mosque.findUniqueOrThrow({ where: { slug: "abu-bakr" } });
+
+  // Один админ-аккаунт = одна мечеть. Второй — демо-аккаунт для показа мультимечетности,
+  // перед боевым использованием стоит сменить пароли обоих (или удалить второй).
+  const admins = [
+    {
+      mosqueId: baiken.id,
+      email: process.env.SEED_ADMIN_EMAIL ?? "imam@jummatime.kz",
+      password: process.env.SEED_ADMIN_PASSWORD ?? "ChangeMe123!",
+      name: process.env.SEED_ADMIN_NAME ?? "Имам",
+    },
+    {
+      mosqueId: abuBakr.id,
+      email: process.env.SEED_ADMIN2_EMAIL ?? "imam2@jummatime.kz",
+      password: process.env.SEED_ADMIN2_PASSWORD ?? "ChangeMe123!",
+      name: process.env.SEED_ADMIN2_NAME ?? "Имам 2",
+    },
+  ];
+  for (const a of admins) {
+    const passwordHash = await bcrypt.hash(a.password, 10);
+    await prisma.adminUser.upsert({
+      where: { email: a.email },
+      update: { mosqueId: a.mosqueId, name: a.name, passwordHash },
+      create: { mosqueId: a.mosqueId, email: a.email, name: a.name, passwordHash },
+    });
+    console.log(`Admin user ready: ${a.email}`);
+  }
 
   const khutbahs = [
     {
+      mosqueSlug: "baiken",
       slug: "shukr-2026-07-03",
       date: new Date("2026-07-03"),
       originalLocale: "kk",
@@ -57,6 +86,7 @@ async function main() {
       ],
     },
     {
+      mosqueSlug: "baiken",
       slug: "birlik-2026-07-10",
       date: new Date("2026-07-10"),
       originalLocale: "kk",
@@ -85,6 +115,7 @@ async function main() {
       ],
     },
     {
+      mosqueSlug: "baiken",
       slug: "sabyr-2026-07-17",
       date: new Date("2026-07-17"),
       originalLocale: "kk",
@@ -110,6 +141,7 @@ async function main() {
       ],
     },
     {
+      mosqueSlug: "abu-bakr",
       slug: "ata-ana-2026-07-24",
       date: new Date("2026-07-24"),
       originalLocale: "kk",
@@ -138,6 +170,7 @@ async function main() {
       ],
     },
     {
+      mosqueSlug: "abu-bakr",
       slug: "amanat-2026-07-31",
       date: new Date("2026-07-31"),
       originalLocale: "kk",
@@ -166,6 +199,7 @@ async function main() {
       ],
     },
     {
+      mosqueSlug: "abu-bakr",
       slug: "gaybat-2026-08-07",
       date: new Date("2026-08-07"),
       originalLocale: "kk",
@@ -192,9 +226,12 @@ async function main() {
     },
   ];
 
+  const mosqueBySlug = { baiken, "abu-bakr": abuBakr } as const;
+
   for (const k of khutbahs) {
     await prisma.khutbah.create({
       data: {
+        mosqueId: mosqueBySlug[k.mosqueSlug as keyof typeof mosqueBySlug].id,
         slug: k.slug,
         date: k.date,
         originalLocale: k.originalLocale,
@@ -203,7 +240,7 @@ async function main() {
       },
     });
   }
-  console.log(`Seeded ${khutbahs.length} khutbahs`);
+  console.log(`Seeded ${khutbahs.length} khutbahs (split across ${mosques.length} mosques)`);
 
   for (const ayah of alKahfAyahs) {
     await prisma.quranAyah.create({
@@ -297,24 +334,30 @@ async function main() {
       category: "AL_KAHF",
       order: 1,
       translations: [
-        { locale: "kk", title: "Неге жұма сайын оқимыз", body: "Пайғамбарымыз ﷺ: «Кім жұма күні Кахф сүресін оқыса, оған екі жұманың арасында нұр жарқырайды» деген. Толық мәтінді сенімді дереккөзден оқу үшін жоғарыдағы сілтемені пайдаланыңыз." },
-        { locale: "ru", title: "Почему мы читаем её каждую пятницу", body: "Пророк ﷺ сказал: «Кто прочитает суру Аль-Кахф в пятницу, тому воссияет свет между двумя пятницами». Полный текст читайте по ссылке выше на проверенном источнике." },
-        { locale: "en", title: "Why we read it every Friday", body: "The Prophet ﷺ said: \"Whoever recites Surah Al-Kahf on Friday will have a light that shines between the two Fridays.\" Use the link above to read the full text from a trusted source." },
+        { locale: "kk", title: "Неге жұма сайын оқимыз", body: "Пайғамбарымыз ﷺ: «Кім жұма күні Кахф сүресін оқыса, оған екі жұманың арасында нұр жарқырайды» деген. Толық мәтін — оригинал, транскрипция және аударма — осы беттің төменгі жағында." },
+        { locale: "ru", title: "Почему мы читаем её каждую пятницу", body: "Пророк ﷺ сказал: «Кто прочитает суру Аль-Кахф в пятницу, тому воссияет свет между двумя пятницами». Полный текст — оригинал, транскрипция и перевод — ниже на этой странице." },
+        { locale: "en", title: "Why we read it every Friday", body: "The Prophet ﷺ said: \"Whoever recites Surah Al-Kahf on Friday will have a light that shines between the two Fridays.\" The full text — original, transliteration, and translation — is below on this page." },
       ],
     },
   ];
 
-  for (const b of blocks) {
-    await prisma.contentBlock.create({
-      data: {
-        category: b.category,
-        order: b.order,
-        published: true,
-        translations: { create: b.translations },
-      },
-    });
+  // Сунны/напоминания и т.п. — общечеловеческий исламский контент, но по архитектуре
+  // (см. решение о мультимечетности) хранится отдельной копией на каждую мечеть,
+  // чтобы у каждой мечети был полный набор материалов с самого начала.
+  for (const mosque of [baiken, abuBakr]) {
+    for (const b of blocks) {
+      await prisma.contentBlock.create({
+        data: {
+          mosqueId: mosque.id,
+          category: b.category,
+          order: b.order,
+          published: true,
+          translations: { create: b.translations },
+        },
+      });
+    }
   }
-  console.log(`Seeded ${blocks.length} content blocks`);
+  console.log(`Seeded ${blocks.length} content blocks × ${mosques.length} mosques`);
 }
 
 main()

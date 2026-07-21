@@ -1,7 +1,7 @@
 "use client";
 
-import { useActionState } from "react";
-import { Loader2 } from "lucide-react";
+import { useActionState, useState } from "react";
+import { Loader2, Check } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { localeNames, locales } from "@/i18n/routing";
+import { localeNames, locales, type Locale } from "@/i18n/routing";
 import type { ContentFormState } from "./actions";
 import { CATEGORY_LABELS } from "./categories";
 
@@ -37,6 +37,22 @@ export function ContentForm({
   const translationFor = (locale: string) =>
     initial?.translations.find((t) => t.locale === locale);
 
+  const [fields, setFields] = useState<Record<Locale, { title: string; body: string }>>(() => {
+    const entry = {} as Record<Locale, { title: string; body: string }>;
+    for (const l of locales) {
+      const t = translationFor(l);
+      entry[l] = { title: t?.title ?? "", body: t?.body ?? "" };
+    }
+    return entry;
+  });
+
+  const isFilled = (l: Locale) => fields[l].title.trim() !== "" && fields[l].body.trim() !== "";
+  const filledCount = locales.filter(isFilled).length;
+
+  function updateField(l: Locale, key: "title" | "body", value: string) {
+    setFields((prev) => ({ ...prev, [l]: { ...prev[l], [key]: value } }));
+  }
+
   return (
     <form action={formAction} className="flex flex-col gap-6">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -54,6 +70,7 @@ export function ContentForm({
               ))}
             </SelectContent>
           </Select>
+          <p className="text-xs text-muted-foreground">На какой странице сайта появится</p>
         </div>
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="order">Порядок</Label>
@@ -64,6 +81,7 @@ export function ContentForm({
             min={0}
             defaultValue={initial?.order ?? 0}
           />
+          <p className="text-xs text-muted-foreground">Меньше число — выше в списке</p>
         </div>
         <div className="flex items-end gap-2 pb-2">
           <input
@@ -77,35 +95,48 @@ export function ContentForm({
         </div>
       </div>
 
-      <Tabs defaultValue="kk">
-        <TabsList>
+      <div>
+        <p className="mb-2 text-sm text-muted-foreground">
+          Достаточно заполнить <strong>один язык</strong> (заголовок + текст) — на остальных
+          сайт покажет этот же текст с пометкой «перевод пока не готов». Языки с галочкой уже
+          готовы: заполнено {filledCount} из {locales.length}.
+        </p>
+        <Tabs defaultValue="kk">
+          <TabsList>
+            {locales.map((l) => (
+              <TabsTrigger key={l} value={l} className="gap-1.5">
+                {isFilled(l) && <Check className="size-3.5 text-[var(--jt-green-700)]" />}
+                {localeNames[l]}
+              </TabsTrigger>
+            ))}
+          </TabsList>
           {locales.map((l) => (
-            <TabsTrigger key={l} value={l}>
-              {localeNames[l]}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-        {locales.map((l) => {
-          const t = translationFor(l);
-          return (
             <TabsContent key={l} value={l} className="flex flex-col gap-4">
               <div className="flex flex-col gap-1.5">
                 <Label htmlFor={`title_${l}`}>Заголовок</Label>
-                <Input id={`title_${l}`} name={`title_${l}`} defaultValue={t?.title} />
+                <Input
+                  id={`title_${l}`}
+                  name={`title_${l}`}
+                  value={fields[l].title}
+                  onChange={(e) => updateField(l, "title", e.target.value)}
+                  placeholder="Короткий заголовок карточки"
+                />
               </div>
               <div className="flex flex-col gap-1.5">
                 <Label htmlFor={`body_${l}`}>Текст</Label>
                 <Textarea
                   id={`body_${l}`}
                   name={`body_${l}`}
-                  defaultValue={t?.body}
+                  value={fields[l].body}
+                  onChange={(e) => updateField(l, "body", e.target.value)}
+                  placeholder="Текст карточки на этом языке"
                   rows={8}
                 />
               </div>
             </TabsContent>
-          );
-        })}
-      </Tabs>
+          ))}
+        </Tabs>
+      </div>
 
       {state?.error && <p className="text-sm text-destructive">{state.error}</p>}
 

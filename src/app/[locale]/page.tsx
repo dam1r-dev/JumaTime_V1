@@ -12,6 +12,7 @@ import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { prisma } from "@/lib/prisma";
 import { pickTranslation, formatDate } from "@/lib/i18n-content";
+import { getMosques, getCurrentMosque } from "@/lib/mosque";
 import { Button } from "@/components/ui/button";
 import { SectionCard } from "@/components/site/section-card";
 import { Badge } from "@/components/ui/badge";
@@ -25,15 +26,19 @@ export default async function HomePage({
   setRequestLocale(locale);
   const l = locale as Locale;
 
+  const mosque = await getCurrentMosque(await getMosques());
+
   const [t, home, sectionDesc, latest] = await Promise.all([
     getTranslations({ locale, namespace: "Nav" }),
     getTranslations({ locale, namespace: "Home" }),
     getTranslations({ locale, namespace: "Sections" }),
-    prisma.khutbah.findFirst({
-      where: { published: true },
-      orderBy: { date: "desc" },
-      include: { translations: true },
-    }),
+    mosque
+      ? prisma.khutbah.findFirst({
+          where: { published: true, mosqueId: mosque.id },
+          orderBy: { date: "desc" },
+          include: { translations: true },
+        })
+      : null,
   ]);
 
   const latestContent = latest

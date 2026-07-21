@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { locales } from "@/i18n/routing";
+import { auth } from "@/auth";
 
 export type KhutbahFormState = { error?: string } | undefined;
 
@@ -34,6 +35,9 @@ export async function createKhutbah(
   _prevState: KhutbahFormState,
   formData: FormData
 ): Promise<KhutbahFormState> {
+  const session = await auth();
+  if (!session) redirect("/admin/login");
+
   const parsed = khutbahSchema.safeParse({
     slug: formData.get("slug"),
     date: formData.get("date"),
@@ -57,6 +61,7 @@ export async function createKhutbah(
 
   await prisma.khutbah.create({
     data: {
+      mosqueId: session.user.mosqueId,
       slug: parsed.data.slug,
       date: new Date(parsed.data.date),
       published: parsed.data.published,
@@ -74,6 +79,16 @@ export async function updateKhutbah(
   _prevState: KhutbahFormState,
   formData: FormData
 ): Promise<KhutbahFormState> {
+  const session = await auth();
+  if (!session) redirect("/admin/login");
+
+  const owned = await prisma.khutbah.findFirst({
+    where: { id, mosqueId: session.user.mosqueId },
+  });
+  if (!owned) {
+    return { error: "Хутба не найдена" };
+  }
+
   const parsed = khutbahSchema.safeParse({
     slug: formData.get("slug"),
     date: formData.get("date"),
@@ -116,7 +131,10 @@ export async function updateKhutbah(
 }
 
 export async function deleteKhutbah(id: string) {
-  await prisma.khutbah.delete({ where: { id } });
+  const session = await auth();
+  if (!session) redirect("/admin/login");
+
+  await prisma.khutbah.deleteMany({ where: { id, mosqueId: session.user.mosqueId } });
   revalidatePath("/admin/khutbahs");
   redirect("/admin/khutbahs");
 }

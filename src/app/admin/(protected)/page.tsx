@@ -1,12 +1,16 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { auth } from "@/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 export default async function AdminDashboardPage() {
+  const session = await auth();
+  const mosqueId = session!.user.mosqueId;
+
   const [khutbahCount, contentCounts] = await Promise.all([
-    prisma.khutbah.count(),
-    prisma.contentBlock.groupBy({ by: ["category"], _count: true }),
+    prisma.khutbah.count({ where: { mosqueId } }),
+    prisma.contentBlock.groupBy({ by: ["category"], where: { mosqueId }, _count: true }),
   ]);
 
   const countFor = (category: string) =>

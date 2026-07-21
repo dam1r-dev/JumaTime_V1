@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { Logo } from "./logo";
 import { LocaleSwitcher } from "./locale-switcher";
+import { MosqueSwitcher } from "./mosque-switcher";
 import { MobileNav } from "./mobile-nav";
 
 export async function SiteHeader({ locale }: { locale: Locale }) {
@@ -37,6 +38,7 @@ export async function SiteHeader({ locale }: { locale: Locale }) {
           ))}
         </nav>
         <div className="flex items-center gap-2">
+          <MosqueSwitcher locale={locale} />
           <LocaleSwitcher />
           <MobileNav links={links} />
         </div>

@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import NextLink from "next/link";
 import { BookOpen, LayoutDashboard, ListChecks, LogOut } from "lucide-react";
 import { auth } from "@/auth";
+import { prisma } from "@/lib/prisma";
 import { Logo } from "@/components/site/logo";
 import { Button } from "@/components/ui/button";
 import { logoutAction } from "./actions";
@@ -12,7 +13,11 @@ export default async function AdminProtectedLayout({
   children: React.ReactNode;
 }) {
   const session = await auth();
-  if (!session) redirect("/admin/login");
+  // A session minted before mosqueId was added to the JWT (or a stale/invalid one)
+  // won't have it — treat that the same as logged out rather than crashing below.
+  if (!session || !session.user.mosqueId) redirect("/admin/login");
+
+  const mosque = await prisma.mosque.findUnique({ where: { id: session.user.mosqueId } });
 
   const links = [
     { href: "/admin", label: "Обзор", icon: LayoutDashboard },
@@ -27,6 +32,11 @@ export default async function AdminProtectedLayout({
           <NextLink href="/admin" className="block px-2">
             <Logo className="text-white" />
           </NextLink>
+          {mosque && (
+            <p className="mt-2 truncate px-2 text-xs text-white/60">
+              Мечеть: <span className="text-white/90">{mosque.name}</span>
+            </p>
+          )}
           <nav className="mt-8 flex flex-row gap-1 lg:flex-col">
             {links.map((link) => (
               <NextLink

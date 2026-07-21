@@ -20,16 +20,32 @@ enum ContentCategory {
   AL_KAHF
 }
 
+model Mosque {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  name      String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  adminUsers    AdminUser[]
+  khutbahs      Khutbah[]
+  contentBlocks ContentBlock[]
+}
+
 model AdminUser {
   id           String   @id @default(cuid())
+  mosqueId     String
   email        String   @unique
   name         String
   passwordHash String
   createdAt    DateTime @default(now())
+
+  mosque Mosque @relation(fields: [mosqueId], references: [id])
 }
 
 model Khutbah {
   id            String   @id @default(cuid())
+  mosqueId      String
   slug          String   @unique
   date          DateTime
   published     Boolean  @default(true)
@@ -37,9 +53,10 @@ model Khutbah {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
+  mosque       Mosque @relation(fields: [mosqueId], references: [id])
   translations KhutbahTranslation[]
 
-  @@index([date])
+  @@index([mosqueId, date])
 }
 
 model KhutbahTranslation {
@@ -80,15 +97,17 @@ model QuranAyahTranslation {
 
 model ContentBlock {
   id        String          @id @default(cuid())
+  mosqueId  String
   category  ContentCategory
   order     Int             @default(0)
   published Boolean         @default(true)
   createdAt DateTime        @default(now())
   updatedAt DateTime        @updatedAt
 
+  mosque       Mosque @relation(fields: [mosqueId], references: [id])
   translations ContentTranslation[]
 
-  @@index([category, order])
+  @@index([mosqueId, category, order])
 }
 
 model ContentTranslation {

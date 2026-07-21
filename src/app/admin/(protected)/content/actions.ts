@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { locales } from "@/i18n/routing";
+import { auth } from "@/auth";
 import { CATEGORIES } from "./categories";
 
 export type ContentFormState = { error?: string } | undefined;
@@ -29,6 +30,9 @@ export async function createContentBlock(
   _prevState: ContentFormState,
   formData: FormData
 ): Promise<ContentFormState> {
+  const session = await auth();
+  if (!session) redirect("/admin/login");
+
   const parsed = contentSchema.safeParse({
     category: formData.get("category"),
     order: formData.get("order") || "0",
@@ -46,6 +50,7 @@ export async function createContentBlock(
 
   await prisma.contentBlock.create({
     data: {
+      mosqueId: session.user.mosqueId,
       category: parsed.data.category,
       order: parsed.data.order,
       published: parsed.data.published,
@@ -62,6 +67,16 @@ export async function updateContentBlock(
   _prevState: ContentFormState,
   formData: FormData
 ): Promise<ContentFormState> {
+  const session = await auth();
+  if (!session) redirect("/admin/login");
+
+  const owned = await prisma.contentBlock.findFirst({
+    where: { id, mosqueId: session.user.mosqueId },
+  });
+  if (!owned) {
+    return { error: "Материал не найден" };
+  }
+
   const parsed = contentSchema.safeParse({
     category: formData.get("category"),
     order: formData.get("order") || "0",
@@ -95,7 +110,10 @@ export async function updateContentBlock(
 }
 
 export async function deleteContentBlock(id: string) {
-  await prisma.contentBlock.delete({ where: { id } });
+  const session = await auth();
+  if (!session) redirect("/admin/login");
+
+  await prisma.contentBlock.deleteMany({ where: { id, mosqueId: session.user.mosqueId } });
   revalidatePath("/admin/content");
   redirect("/admin/content");
 }

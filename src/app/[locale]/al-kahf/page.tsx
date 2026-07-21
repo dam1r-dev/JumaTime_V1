@@ -3,6 +3,7 @@ import { ExternalLink } from "lucide-react";
 import type { Locale } from "@/i18n/routing";
 import { getContentBlocks } from "@/lib/content-blocks";
 import { pickTranslation } from "@/lib/i18n-content";
+import { getMosques, getCurrentMosque } from "@/lib/mosque";
 import { prisma } from "@/lib/prisma";
 import { PageHeader } from "@/components/site/page-header";
 import { ContentBlockList } from "@/components/site/content-block-list";
@@ -17,9 +18,13 @@ export default async function AlKahfPage({
   setRequestLocale(locale);
   const l = locale as Locale;
 
+  const mosque = await getCurrentMosque(await getMosques());
+
+  // The 110 ayahs are the Qur'an text itself — shared scripture, not mosque-specific.
+  // Only the "why we read this" intro blocks below vary per mosque.
   const [t, items, ayahs] = await Promise.all([
     getTranslations({ locale, namespace: "AlKahf" }),
-    getContentBlocks("AL_KAHF", l),
+    mosque ? getContentBlocks("AL_KAHF", l, mosque.id) : Promise.resolve([]),
     prisma.quranAyah.findMany({
       where: { surahNumber: 18 },
       orderBy: { ayahNumber: "asc" },

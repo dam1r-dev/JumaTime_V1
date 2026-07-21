@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { auth } from "@/auth";
 import { ContentForm } from "../content-form";
 import { updateContentBlock, deleteContentBlock } from "../actions";
 import { Button } from "@/components/ui/button";
@@ -10,8 +11,9 @@ export default async function EditContentPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const block = await prisma.contentBlock.findUnique({
-    where: { id },
+  const session = await auth();
+  const block = await prisma.contentBlock.findFirst({
+    where: { id, mosqueId: session!.user.mosqueId },
     include: { translations: true },
   });
 

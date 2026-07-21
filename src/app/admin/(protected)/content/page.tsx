@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { prisma } from "@/lib/prisma";
+import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -15,7 +16,9 @@ import {
 import { CATEGORY_LABELS } from "./categories";
 
 export default async function AdminContentPage() {
+  const session = await auth();
   const blocks = await prisma.contentBlock.findMany({
+    where: { mosqueId: session!.user.mosqueId },
     orderBy: [{ category: "asc" }, { order: "asc" }],
     include: { translations: true },
   });

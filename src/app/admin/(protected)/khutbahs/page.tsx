@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { prisma } from "@/lib/prisma";
+import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -13,7 +14,9 @@ import {
 } from "@/components/ui/table";
 
 export default async function AdminKhutbahsPage() {
+  const session = await auth();
   const khutbahs = await prisma.khutbah.findMany({
+    where: { mosqueId: session!.user.mosqueId },
     orderBy: { date: "desc" },
     include: { translations: { where: { locale: "kk" } } },
   });

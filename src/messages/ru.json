@@ -81,6 +81,7 @@
   "Common": {
     "minutesRead": "{minutes} мин чтения",
     "loading": "Загрузка...",
-    "language": "Язык"
+    "language": "Язык",
+  "mosque": "Мечеть"
   }
 }

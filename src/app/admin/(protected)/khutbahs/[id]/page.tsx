@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { auth } from "@/auth";
 import { KhutbahForm } from "../khutbah-form";
 import { updateKhutbah, deleteKhutbah } from "../actions";
 import { Button } from "@/components/ui/button";
@@ -10,8 +11,9 @@ export default async function EditKhutbahPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const khutbah = await prisma.khutbah.findUnique({
-    where: { id },
+  const session = await auth();
+  const khutbah = await prisma.khutbah.findFirst({
+    where: { id, mosqueId: session!.user.mosqueId },
     include: { translations: true },
   });
 

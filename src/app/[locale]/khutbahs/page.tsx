@@ -4,6 +4,7 @@ import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { prisma } from "@/lib/prisma";
 import { pickTranslation, formatDate, estimateReadMinutes } from "@/lib/i18n-content";
+import { getMosques, getCurrentMosque } from "@/lib/mosque";
 import { PageHeader } from "@/components/site/page-header";
 import { Input } from "@/components/ui/input";
 
@@ -19,13 +20,17 @@ export default async function KhutbahsPage({
   setRequestLocale(locale);
   const l = locale as Locale;
 
+  const mosque = await getCurrentMosque(await getMosques());
+
   const [t, khutbahs] = await Promise.all([
     getTranslations({ locale, namespace: "Khutbahs" }),
-    prisma.khutbah.findMany({
-      where: { published: true },
-      orderBy: { date: "desc" },
-      include: { translations: true },
-    }),
+    mosque
+      ? prisma.khutbah.findMany({
+          where: { published: true, mosqueId: mosque.id },
+          orderBy: { date: "desc" },
+          include: { translations: true },
+        })
+      : Promise.resolve([]),
   ]);
 
   const items = khutbahs

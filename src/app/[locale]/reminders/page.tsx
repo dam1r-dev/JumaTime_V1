@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import { getContentBlocks } from "@/lib/content-blocks";
+import { getMosques, getCurrentMosque } from "@/lib/mosque";
 import { PageHeader } from "@/components/site/page-header";
 import { ContentBlockList } from "@/components/site/content-block-list";
 
@@ -13,9 +14,11 @@ export default async function RemindersPage({
   setRequestLocale(locale);
   const l = locale as Locale;
 
+  const mosque = await getCurrentMosque(await getMosques());
+
   const [t, items] = await Promise.all([
     getTranslations({ locale, namespace: "Reminders" }),
-    getContentBlocks("REMINDER", l),
+    mosque ? getContentBlocks("REMINDER", l, mosque.id) : Promise.resolve([]),
   ]);
 
   return (

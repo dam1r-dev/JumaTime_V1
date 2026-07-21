@@ -81,6 +81,7 @@
   "Common": {
     "minutesRead": "{minutes} min read",
     "loading": "Loading...",
-    "language": "Language"
+    "language": "Language",
+  "mosque": "Mosque"
   }
 }
