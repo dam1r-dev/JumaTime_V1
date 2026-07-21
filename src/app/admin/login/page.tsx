@@ -5,7 +5,10 @@ import { LoginForm } from "./login-form";
 
 export default async function AdminLoginPage() {
   const session = await auth();
-  if (session) redirect("/admin");
+  // A session cookie minted before mosqueId existed on the JWT (or otherwise
+  // invalid) must NOT count as logged in here, or this page and the /admin
+  // layout redirect to each other forever (layout sends it back here).
+  if (session && session.user.mosqueId) redirect("/admin");
 
   return (
     <div className="flex flex-1 items-center justify-center bg-[var(--jt-green-950)] px-4 py-16">
