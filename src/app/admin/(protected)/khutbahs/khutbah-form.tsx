@@ -113,7 +113,9 @@ export function KhutbahForm({
         <Label htmlFor="originalLocale">Язык оригинала</Label>
         <Select name="originalLocale" defaultValue={initial?.originalLocale ?? "kk"}>
           <SelectTrigger id="originalLocale">
-            <SelectValue />
+            <SelectValue>
+              {(value: Locale) => localeNames[value]}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             {locales.map((l) => (

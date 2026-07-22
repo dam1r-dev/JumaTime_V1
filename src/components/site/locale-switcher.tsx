@@ -34,7 +34,7 @@ export function LocaleSwitcher() {
         render={
           <Button variant="outline" size="sm" className="gap-1.5 text-foreground" aria-label={t("language")}>
             <Globe className="size-4" />
-            {localeNames[locale as Locale]}
+            <span className="hidden sm:inline">{localeNames[locale as Locale]}</span>
           </Button>
         }
       />

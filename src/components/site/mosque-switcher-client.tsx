@@ -47,7 +47,7 @@ export function MosqueSwitcherClient({
             disabled={pending}
           >
             <Building2 className="size-4" />
-            {current?.name ?? label}
+            <span className="hidden sm:inline">{current?.name ?? label}</span>
           </Button>
         }
       />

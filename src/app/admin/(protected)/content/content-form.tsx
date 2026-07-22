@@ -60,7 +60,9 @@ export function ContentForm({
           <Label htmlFor="category">Раздел</Label>
           <Select name="category" defaultValue={initial?.category ?? "SUNNAH"}>
             <SelectTrigger id="category">
-              <SelectValue />
+              <SelectValue>
+                {(value: string) => CATEGORY_LABELS[value as keyof typeof CATEGORY_LABELS]}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
               {Object.entries(CATEGORY_LABELS).map(([value, label]) => (
