@@ -3,6 +3,7 @@ import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { SESSION_VERSION } from "@/lib/session-version";
+import { recordFailedLogin, clearLoginAttempts } from "@/lib/login-rate-limit";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   // Short-lived on purpose: this is a shared admin device at the mosque, not a
@@ -23,11 +24,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
 
         const user = await prisma.adminUser.findUnique({ where: { email } });
-        if (!user) return null;
+        if (!user) {
+          recordFailedLogin(email);
+          return null;
+        }
 
         const valid = await bcrypt.compare(password, user.passwordHash);
-        if (!valid) return null;
+        if (!valid) {
+          recordFailedLogin(email);
+          return null;
+        }
 
+        clearLoginAttempts(email);
         return { id: user.id, email: user.email, name: user.name, mosqueId: user.mosqueId };
       },
     }),

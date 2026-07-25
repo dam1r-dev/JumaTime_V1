@@ -69,7 +69,8 @@
   "Saved": {
     "title": "Saved khutbahs",
     "empty": "You haven't saved any khutbahs yet",
-    "browseCta": "Go to catalog"
+    "browseCta": "Go to catalog",
+    "inAppWarning": "Note: saved khutbahs are only stored in this browser. If you opened this site from Instagram, Telegram, or another app, open it in an external browser (Safari, Chrome) to avoid losing your saved items."
   },
   "Sections": {
     "khutbahs": "Read Friday sermons in three languages",

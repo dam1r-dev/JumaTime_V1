@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { locales } from "@/i18n/routing";
 import { auth } from "@/auth";
+import { resolvePublishedAtFromForm } from "@/lib/published";
 
 export type KhutbahFormState = { error?: string } | undefined;
 
@@ -16,7 +17,6 @@ const khutbahSchema = z.object({
     .min(1, "Укажите URL (slug)")
     .regex(/^[a-z0-9-]+$/, "Только латиница, цифры и дефис"),
   date: z.string().min(1, "Укажите дату"),
-  published: z.boolean(),
   originalLocale: z.enum(locales),
 });
 
@@ -41,12 +41,19 @@ export async function createKhutbah(
   const parsed = khutbahSchema.safeParse({
     slug: formData.get("slug"),
     date: formData.get("date"),
-    published: formData.get("published") === "on",
     originalLocale: formData.get("originalLocale"),
   });
 
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Проверьте поля формы" };
+  }
+
+  const publishResult = resolvePublishedAtFromForm(
+    formData.get("publishStatus"),
+    formData.get("scheduledFor")
+  );
+  if ("error" in publishResult) {
+    return { error: publishResult.error };
   }
 
   const translations = extractTranslations(formData);
@@ -64,7 +71,7 @@ export async function createKhutbah(
       mosqueId: session.user.mosqueId,
       slug: parsed.data.slug,
       date: new Date(parsed.data.date),
-      published: parsed.data.published,
+      publishedAt: publishResult.publishedAt,
       originalLocale: parsed.data.originalLocale,
       translations: { create: translations },
     },
@@ -92,12 +99,19 @@ export async function updateKhutbah(
   const parsed = khutbahSchema.safeParse({
     slug: formData.get("slug"),
     date: formData.get("date"),
-    published: formData.get("published") === "on",
     originalLocale: formData.get("originalLocale"),
   });
 
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Проверьте поля формы" };
+  }
+
+  const publishResult = resolvePublishedAtFromForm(
+    formData.get("publishStatus"),
+    formData.get("scheduledFor")
+  );
+  if ("error" in publishResult) {
+    return { error: publishResult.error };
   }
 
   const translations = extractTranslations(formData);
@@ -119,7 +133,7 @@ export async function updateKhutbah(
       data: {
         slug: parsed.data.slug,
         date: new Date(parsed.data.date),
-        published: parsed.data.published,
+        publishedAt: publishResult.publishedAt,
         originalLocale: parsed.data.originalLocale,
         translations: { create: translations },
       },

@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import { KhutbahForm } from "../khutbah-form";
 import { updateKhutbah, deleteKhutbah } from "../actions";
 import { Button } from "@/components/ui/button";
+import { toFormPublishState } from "@/lib/published";
 
 export default async function EditKhutbahPage({
   params,
@@ -21,6 +22,7 @@ export default async function EditKhutbahPage({
 
   const boundUpdate = updateKhutbah.bind(null, id);
   const boundDelete = deleteKhutbah.bind(null, id);
+  const { status: publishStatus, scheduledFor } = toFormPublishState(khutbah.publishedAt);
 
   return (
     <div>
@@ -38,7 +40,8 @@ export default async function EditKhutbahPage({
           initial={{
             slug: khutbah.slug,
             date: khutbah.date.toISOString().slice(0, 10),
-            published: khutbah.published,
+            publishStatus,
+            scheduledFor,
             originalLocale: khutbah.originalLocale,
             translations: khutbah.translations,
           }}

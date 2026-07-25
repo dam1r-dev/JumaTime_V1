@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import { ContentForm } from "../content-form";
 import { updateContentBlock, deleteContentBlock } from "../actions";
 import { Button } from "@/components/ui/button";
+import { toFormPublishState } from "@/lib/published";
 
 export default async function EditContentPage({
   params,
@@ -21,6 +22,7 @@ export default async function EditContentPage({
 
   const boundUpdate = updateContentBlock.bind(null, id);
   const boundDelete = deleteContentBlock.bind(null, id);
+  const { status: publishStatus, scheduledFor } = toFormPublishState(block.publishedAt);
 
   return (
     <div>
@@ -38,7 +40,8 @@ export default async function EditContentPage({
           initial={{
             category: block.category,
             order: block.order,
-            published: block.published,
+            publishStatus,
+            scheduledFor,
             translations: block.translations,
           }}
         />

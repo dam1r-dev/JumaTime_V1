@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { locales } from "@/i18n/routing";
 import { auth } from "@/auth";
+import { resolvePublishedAtFromForm } from "@/lib/published";
 import { CATEGORIES } from "./categories";
 
 export type ContentFormState = { error?: string } | undefined;
@@ -13,7 +14,6 @@ export type ContentFormState = { error?: string } | undefined;
 const contentSchema = z.object({
   category: z.enum(CATEGORIES),
   order: z.coerce.number().int().min(0),
-  published: z.boolean(),
 });
 
 function extractTranslations(formData: FormData) {
@@ -36,11 +36,18 @@ export async function createContentBlock(
   const parsed = contentSchema.safeParse({
     category: formData.get("category"),
     order: formData.get("order") || "0",
-    published: formData.get("published") === "on",
   });
 
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Проверьте поля формы" };
+  }
+
+  const publishResult = resolvePublishedAtFromForm(
+    formData.get("publishStatus"),
+    formData.get("scheduledFor")
+  );
+  if ("error" in publishResult) {
+    return { error: publishResult.error };
   }
 
   const translations = extractTranslations(formData);
@@ -53,7 +60,7 @@ export async function createContentBlock(
       mosqueId: session.user.mosqueId,
       category: parsed.data.category,
       order: parsed.data.order,
-      published: parsed.data.published,
+      publishedAt: publishResult.publishedAt,
       translations: { create: translations },
     },
   });
@@ -80,11 +87,18 @@ export async function updateContentBlock(
   const parsed = contentSchema.safeParse({
     category: formData.get("category"),
     order: formData.get("order") || "0",
-    published: formData.get("published") === "on",
   });
 
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Проверьте поля формы" };
+  }
+
+  const publishResult = resolvePublishedAtFromForm(
+    formData.get("publishStatus"),
+    formData.get("scheduledFor")
+  );
+  if ("error" in publishResult) {
+    return { error: publishResult.error };
   }
 
   const translations = extractTranslations(formData);
@@ -99,7 +113,7 @@ export async function updateContentBlock(
       data: {
         category: parsed.data.category,
         order: parsed.data.order,
-        published: parsed.data.published,
+        publishedAt: publishResult.publishedAt,
         translations: { create: translations },
       },
     }),

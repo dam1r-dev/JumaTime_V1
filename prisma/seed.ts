@@ -227,6 +227,10 @@ async function main() {
   ];
 
   const mosqueBySlug = { baiken, "abu-bakr": abuBakr } as const;
+  // Fixed past date so seeded items always show as published, regardless of
+  // when `db:seed` actually runs (some khutbah `date` values are in the
+  // future relative to "today" for demo purposes).
+  const SEED_PUBLISHED_AT = new Date("2026-01-01T00:00:00Z");
 
   for (const k of khutbahs) {
     await prisma.khutbah.create({
@@ -235,7 +239,7 @@ async function main() {
         slug: k.slug,
         date: k.date,
         originalLocale: k.originalLocale,
-        published: true,
+        publishedAt: SEED_PUBLISHED_AT,
         translations: { create: k.translations },
       },
     });
@@ -352,7 +356,7 @@ async function main() {
           mosqueId: mosque.id,
           category: b.category,
           order: b.order,
-          published: true,
+          publishedAt: SEED_PUBLISHED_AT,
           translations: { create: b.translations },
         },
       });

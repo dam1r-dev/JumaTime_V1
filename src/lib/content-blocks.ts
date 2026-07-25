@@ -1,5 +1,6 @@
 import { prisma } from "./prisma";
 import { pickTranslation } from "./i18n-content";
+import { publishedWhere } from "./published";
 import type { Locale } from "@/i18n/routing";
 import type { ContentCategory } from "@/generated/prisma/client";
 
@@ -9,7 +10,7 @@ export async function getContentBlocks(
   mosqueId: string
 ) {
   const blocks = await prisma.contentBlock.findMany({
-    where: { category, mosqueId, published: true },
+    where: { category, mosqueId, ...publishedWhere() },
     orderBy: { order: "asc" },
     include: { translations: true },
   });

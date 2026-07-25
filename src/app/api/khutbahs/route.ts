@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { pickTranslation } from "@/lib/i18n-content";
+import { publishedWhere } from "@/lib/published";
+import { getMosques, getCurrentMosque } from "@/lib/mosque";
 import { locales, type Locale } from "@/i18n/routing";
 
 export async function GET(request: NextRequest) {
@@ -12,9 +14,15 @@ export async function GET(request: NextRequest) {
   const slugsParam = request.nextUrl.searchParams.get("slugs");
   const slugs = slugsParam ? slugsParam.split(",").filter(Boolean) : undefined;
 
+  const mosque = await getCurrentMosque(await getMosques());
+  if (!mosque) {
+    return NextResponse.json({ items: [] });
+  }
+
   const khutbahs = await prisma.khutbah.findMany({
     where: {
-      published: true,
+      ...publishedWhere(),
+      mosqueId: mosque.id,
       ...(slugs && slugs.length > 0 ? { slug: { in: slugs } } : {}),
     },
     orderBy: { date: "desc" },

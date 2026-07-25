@@ -5,6 +5,7 @@ import type { Locale } from "@/i18n/routing";
 import { prisma } from "@/lib/prisma";
 import { pickTranslation, formatDate, estimateReadMinutes } from "@/lib/i18n-content";
 import { getMosques, getCurrentMosque } from "@/lib/mosque";
+import { publishedWhere } from "@/lib/published";
 import { PageHeader } from "@/components/site/page-header";
 import { Input } from "@/components/ui/input";
 
@@ -26,7 +27,7 @@ export default async function KhutbahsPage({
     getTranslations({ locale, namespace: "Khutbahs" }),
     mosque
       ? prisma.khutbah.findMany({
-          where: { published: true, mosqueId: mosque.id },
+          where: { ...publishedWhere(), mosqueId: mosque.id },
           orderBy: { date: "desc" },
           include: { translations: true },
         })

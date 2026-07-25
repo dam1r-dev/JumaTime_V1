@@ -18,6 +18,8 @@ import { localeNames, locales, type Locale } from "@/i18n/routing";
 import { buildSlug } from "@/lib/slugify";
 import type { KhutbahFormState } from "./actions";
 import { KhutbahPreviewDialog } from "./khutbah-preview-dialog";
+import { PublishStatusField } from "../publish-status-field";
+import type { PublishFormStatus } from "@/lib/published";
 
 type Translation = { locale: string; title: string; summary: string; body: string };
 
@@ -29,7 +31,8 @@ export function KhutbahForm({
   initial?: {
     slug: string;
     date: string;
-    published: boolean;
+    publishStatus: PublishFormStatus;
+    scheduledFor: string;
     originalLocale: string;
     translations: Translation[];
   };
@@ -130,15 +133,11 @@ export function KhutbahForm({
         </p>
       </div>
 
-      <div className="flex items-center gap-2">
-        <input
-          id="published"
-          name="published"
-          type="checkbox"
-          defaultChecked={initial?.published ?? true}
-          className="size-4 rounded border-input"
+      <div className="sm:max-w-xs">
+        <PublishStatusField
+          initialStatus={initial?.publishStatus ?? "draft"}
+          initialScheduledFor={initial?.scheduledFor ?? ""}
         />
-        <Label htmlFor="published">Опубликовано</Label>
       </div>
 
       <div>

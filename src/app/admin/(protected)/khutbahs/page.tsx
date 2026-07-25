@@ -2,8 +2,8 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
+import { PublishStatusBadge } from "../publish-status-badge";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -60,9 +60,7 @@ export default async function AdminKhutbahsPage() {
                   </Link>
                 </TableCell>
                 <TableCell>
-                  <Badge variant={k.published ? "default" : "secondary"}>
-                    {k.published ? "Опубликовано" : "Черновик"}
-                  </Badge>
+                  <PublishStatusBadge publishedAt={k.publishedAt} />
                 </TableCell>
               </TableRow>
             ))}

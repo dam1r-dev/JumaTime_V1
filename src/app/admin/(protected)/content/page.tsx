@@ -2,8 +2,8 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
+import { PublishStatusBadge } from "../publish-status-badge";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Table,
@@ -76,9 +76,7 @@ export default async function AdminContentPage() {
                           </Link>
                         </TableCell>
                         <TableCell>
-                          <Badge variant={item.published ? "default" : "secondary"}>
-                            {item.published ? "Опубликовано" : "Черновик"}
-                          </Badge>
+                          <PublishStatusBadge publishedAt={item.publishedAt} />
                         </TableCell>
                       </TableRow>
                     ))}

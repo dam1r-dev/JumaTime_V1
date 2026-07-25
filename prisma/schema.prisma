@@ -45,14 +45,18 @@ model AdminUser {
 }
 
 model Khutbah {
-  id            String   @id @default(cuid())
+  id            String    @id @default(cuid())
   mosqueId      String
-  slug          String   @unique
+  slug          String    @unique
   date          DateTime
-  published     Boolean  @default(true)
-  originalLocale String  @default("kk")
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  // Null = draft. In the future = scheduled (goes live automatically once
+  // this time passes — no need for the imam to be at a computer). In the
+  // past/now = published. Never shown publicly, purely a gate — see
+  // src/lib/published.ts.
+  publishedAt   DateTime?
+  originalLocale String   @default("kk")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
   mosque       Mosque @relation(fields: [mosqueId], references: [id])
   translations KhutbahTranslation[]
@@ -97,13 +101,14 @@ model QuranAyahTranslation {
 }
 
 model ContentBlock {
-  id        String          @id @default(cuid())
-  mosqueId  String
-  category  ContentCategory
-  order     Int             @default(0)
-  published Boolean         @default(true)
-  createdAt DateTime        @default(now())
-  updatedAt DateTime        @updatedAt
+  id          String          @id @default(cuid())
+  mosqueId    String
+  category    ContentCategory
+  order       Int             @default(0)
+  // See Khutbah.publishedAt — same draft/scheduled/published gate.
+  publishedAt DateTime?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
 
   mosque       Mosque @relation(fields: [mosqueId], references: [id])
   translations ContentTranslation[]

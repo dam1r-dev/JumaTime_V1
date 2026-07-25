@@ -8,7 +8,12 @@ import { prisma } from "@/lib/prisma";
 export type SettingsFormState = { error?: string; success?: boolean } | undefined;
 
 const settingsSchema = z.object({
-  logoUrl: z.union([z.literal(""), z.url("Укажите корректную ссылку на изображение")]),
+  logoUrl: z.union([
+    z.literal(""),
+    z
+      .url("Укажите корректную ссылку на изображение")
+      .refine((url) => /^https?:\/\//i.test(url), "Ссылка должна начинаться с http:// или https://"),
+  ]),
 });
 
 export async function updateMosqueSettings(

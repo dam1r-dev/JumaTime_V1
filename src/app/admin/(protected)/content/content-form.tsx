@@ -17,6 +17,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { localeNames, locales, type Locale } from "@/i18n/routing";
 import type { ContentFormState } from "./actions";
 import { CATEGORY_LABELS } from "./categories";
+import { PublishStatusField } from "../publish-status-field";
+import type { PublishFormStatus } from "@/lib/published";
 
 type Translation = { locale: string; title: string; body: string };
 
@@ -28,7 +30,8 @@ export function ContentForm({
   initial?: {
     category: string;
     order: number;
-    published: boolean;
+    publishStatus: PublishFormStatus;
+    scheduledFor: string;
     translations: Translation[];
   };
 }) {
@@ -85,16 +88,10 @@ export function ContentForm({
           />
           <p className="text-xs text-muted-foreground">Меньше число — выше в списке</p>
         </div>
-        <div className="flex items-end gap-2 pb-2">
-          <input
-            id="published"
-            name="published"
-            type="checkbox"
-            defaultChecked={initial?.published ?? true}
-            className="size-4 rounded border-input"
-          />
-          <Label htmlFor="published">Опубликовано</Label>
-        </div>
+        <PublishStatusField
+          initialStatus={initial?.publishStatus ?? "draft"}
+          initialScheduledFor={initial?.scheduledFor ?? ""}
+        />
       </div>
 
       <div>
