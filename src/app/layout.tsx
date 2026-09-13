@@ -15,7 +15,7 @@ const notoNaskhArabic = Noto_Naskh_Arabic({
 
 export const metadata: Metadata = {
   title: "Jumma Time",
-  description: "Платформа для мечетей: пятничные хутбы на казахском, русском и английском",
+  description: "Платформа для мечетей: пятничные проповеди на казахском, русском и английском",
 };
 
 export default function RootLayout({
