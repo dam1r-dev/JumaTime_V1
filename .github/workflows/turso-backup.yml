@@ -1,0 +1,32 @@
+name: Backup Turso database
+
+on:
+  schedule:
+    # Every Sunday 03:00 UTC
+    - cron: "0 3 * * 0"
+  workflow_dispatch: {}
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Turso CLI
+        # get.tur.so/install.sh currently serves a certificate GitHub Pages
+        # can't validate (unrelated to this repo) — pull the release binary
+        # directly from GitHub instead.
+        run: |
+          curl -sSfL -o turso.tar.gz \
+            https://github.com/tursodatabase/turso-cli/releases/latest/download/turso-cli_Linux_x86_64.tar.gz
+          tar -xzf turso.tar.gz turso
+          sudo mv turso /usr/local/bin/turso
+          turso config set token "${{ secrets.TURSO_AUTH_TOKEN }}"
+
+      - name: Dump database
+        run: turso db shell jumatime ".dump" > "jumatime-backup-$(date -u +%F).sql"
+
+      - name: Upload backup artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: jumatime-backup-${{ github.run_id }}
+          path: jumatime-backup-*.sql
+          retention-days: 90
