@@ -1,4 +1,4 @@
-const STORAGE_KEY = "jumma-time:saved-khutbahs";
+const STORAGE_KEY = "jumma-time:saved-sermons";
 const SERVER_SNAPSHOT: string[] = [];
 const listeners = new Set<() => void>();
 

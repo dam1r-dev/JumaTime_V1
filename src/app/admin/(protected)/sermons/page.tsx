@@ -13,9 +13,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-export default async function AdminKhutbahsPage() {
+export default async function AdminSermonsPage() {
   const session = await auth();
-  const khutbahs = await prisma.khutbah.findMany({
+  const sermons = await prisma.sermon.findMany({
     where: { mosqueId: session!.user.mosqueId },
     orderBy: { date: "desc" },
     include: { translations: { where: { locale: "kk" } } },
@@ -24,13 +24,13 @@ export default async function AdminKhutbahsPage() {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Хутбы</h1>
+        <h1 className="text-2xl font-bold">Проповеди</h1>
         <Button
           className="bg-[var(--jt-green-900)] hover:bg-[var(--jt-green-800)]"
           render={
-            <Link href="/admin/khutbahs/new">
+            <Link href="/admin/sermons/new">
               <Plus className="size-4" />
-              Новая хутба
+              Новая проповедь
             </Link>
           }
         />
@@ -46,14 +46,14 @@ export default async function AdminKhutbahsPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {khutbahs.map((k) => (
+            {sermons.map((k) => (
               <TableRow key={k.id}>
                 <TableCell className="whitespace-nowrap">
                   {new Intl.DateTimeFormat("ru-RU").format(k.date)}
                 </TableCell>
                 <TableCell>
                   <Link
-                    href={`/admin/khutbahs/${k.id}`}
+                    href={`/admin/sermons/${k.id}`}
                     className="font-medium hover:underline"
                   >
                     {k.translations[0]?.title ?? k.slug}
@@ -64,10 +64,10 @@ export default async function AdminKhutbahsPage() {
                 </TableCell>
               </TableRow>
             ))}
-            {khutbahs.length === 0 && (
+            {sermons.length === 0 && (
               <TableRow>
                 <TableCell colSpan={3} className="py-8 text-center text-muted-foreground">
-                  Пока нет хутб
+                  Пока нет проповедей
                 </TableCell>
               </TableRow>
             )}

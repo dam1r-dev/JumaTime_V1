@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { localeNames, type Locale } from "@/i18n/routing";
 
-export function KhutbahPreviewDialog({
+export function SermonPreviewDialog({
   locale,
   date,
   title,
@@ -52,13 +52,13 @@ export function KhutbahPreviewDialog({
         <div className="max-h-[70vh] overflow-y-auto bg-[var(--jt-cream)] px-5 py-6 text-[var(--jt-ink)]">
           <p className="text-sm text-[var(--jt-gold-600)]">{formattedDate}</p>
           <h1 className="mt-2 text-2xl font-bold tracking-tight">
-            {title.trim() || "Заголовок хутбы"}
+            {title.trim() || "Заголовок проповеди"}
           </h1>
           {summary.trim() && (
             <p className="mt-3 text-base text-muted-foreground">{summary}</p>
           )}
           <div className="prose prose-neutral mt-6 max-w-none whitespace-pre-wrap text-base leading-relaxed">
-            {body.trim() || "Текст хутбы появится здесь по мере заполнения."}
+            {body.trim() || "Текст проповеди появится здесь по мере заполнения."}
           </div>
         </div>
       </DialogContent>

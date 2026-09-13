@@ -37,7 +37,7 @@ export default async function HomePage({
     getTranslations({ locale, namespace: "Home" }),
     getTranslations({ locale, namespace: "Sections" }),
     mosque
-      ? prisma.khutbah.findFirst({
+      ? prisma.sermon.findFirst({
           where: { ...publishedWhere(), mosqueId: mosque.id },
           orderBy: { date: "desc" },
           include: { translations: true },
@@ -53,7 +53,7 @@ export default async function HomePage({
     : null;
 
   const sections = [
-    { href: "/khutbahs", icon: BookOpen, title: t("khutbahs"), description: sectionDesc("khutbahs") },
+    { href: "/sermons", icon: BookOpen, title: t("sermons"), description: sectionDesc("sermons") },
     { href: "/sunnah", icon: Sparkles, title: t("sunnah"), description: sectionDesc("sunnah") },
     { href: "/recommended-actions", icon: ListChecks, title: t("recommendedActions"), description: sectionDesc("recommendedActions") },
     { href: "/reminders", icon: Bell, title: t("reminders"), description: sectionDesc("reminders") },
@@ -78,7 +78,7 @@ export default async function HomePage({
             <Button
               size="lg"
               className="bg-[var(--jt-gold-500)] text-[var(--jt-ink)] hover:bg-[var(--jt-gold-400)]"
-              render={<Link href="/khutbahs">{home("browseCta")}</Link>}
+              render={<Link href="/sermons">{home("browseCta")}</Link>}
             />
             <Button
               size="lg"
@@ -131,10 +131,10 @@ export default async function HomePage({
       {latest && latestContent && (
         <section className="mx-auto max-w-6xl px-4 py-10">
           <h2 className="mb-4 text-xl font-semibold">
-            {home("latestKhutbahTitle")}
+            {home("latestSermonTitle")}
           </h2>
           <Link
-            href={`/khutbahs/${latest.slug}`}
+            href={`/sermons/${latest.slug}`}
             className="block rounded-2xl border border-border bg-card p-6 shadow-sm transition-shadow hover:shadow-md"
           >
             <p className="text-sm text-[var(--jt-gold-600)]">

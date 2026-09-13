@@ -20,7 +20,7 @@ export default async function AdminProtectedLayout({
 
   const links = [
     { href: "/admin", label: "Обзор", icon: LayoutDashboard },
-    { href: "/admin/khutbahs", label: "Хутбы", icon: BookOpen },
+    { href: "/admin/sermons", label: "Проповеди", icon: BookOpen },
     { href: "/admin/content", label: "Разделы сайта", icon: ListChecks },
     { href: "/admin/settings", label: "Настройки", icon: Settings },
   ];

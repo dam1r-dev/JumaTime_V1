@@ -9,7 +9,7 @@ import { publishedWhere } from "@/lib/published";
 import { PageHeader } from "@/components/site/page-header";
 import { Input } from "@/components/ui/input";
 
-export default async function KhutbahsPage({
+export default async function SermonsPage({
   params,
   searchParams,
 }: {
@@ -23,10 +23,10 @@ export default async function KhutbahsPage({
 
   const mosque = await getCurrentMosque(await getMosques());
 
-  const [t, khutbahs] = await Promise.all([
-    getTranslations({ locale, namespace: "Khutbahs" }),
+  const [t, sermons] = await Promise.all([
+    getTranslations({ locale, namespace: "Sermons" }),
     mosque
-      ? prisma.khutbah.findMany({
+      ? prisma.sermon.findMany({
           where: { ...publishedWhere(), mosqueId: mosque.id },
           orderBy: { date: "desc" },
           include: { translations: true },
@@ -34,12 +34,12 @@ export default async function KhutbahsPage({
       : Promise.resolve([]),
   ]);
 
-  const items = khutbahs
+  const items = sermons
     .map((k) => ({
-      khutbah: k,
+      sermon: k,
       content: pickTranslation(k.translations, l, k.originalLocale),
     }))
-    .filter((x): x is { khutbah: typeof x.khutbah; content: NonNullable<typeof x.content> } =>
+    .filter((x): x is { sermon: typeof x.sermon; content: NonNullable<typeof x.content> } =>
       x.content !== null
     );
 
@@ -48,7 +48,7 @@ export default async function KhutbahsPage({
     ? items.filter(
         (item) =>
           item.content.translation.title.toLowerCase().includes(query) ||
-          formatDate(item.khutbah.date, l).toLowerCase().includes(query)
+          formatDate(item.sermon.date, l).toLowerCase().includes(query)
       )
     : items;
 
@@ -71,14 +71,14 @@ export default async function KhutbahsPage({
           <p className="py-12 text-center text-muted-foreground">{t("empty")}</p>
         ) : (
           <div className="flex flex-col gap-4">
-            {filtered.map(({ khutbah, content }) => (
+            {filtered.map(({ sermon, content }) => (
               <Link
-                key={khutbah.id}
-                href={`/khutbahs/${khutbah.slug}`}
+                key={sermon.id}
+                href={`/sermons/${sermon.slug}`}
                 className="group rounded-2xl border border-border bg-card p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md hover:border-[var(--jt-gold-500)]"
               >
                 <div className="flex flex-wrap items-center gap-2 text-sm text-[var(--jt-gold-600)]">
-                  <span>{formatDate(khutbah.date, l)}</span>
+                  <span>{formatDate(sermon.date, l)}</span>
                   <span className="text-muted-foreground">·</span>
                   <span className="text-muted-foreground">
                     {estimateReadMinutes(content.translation.body)} min

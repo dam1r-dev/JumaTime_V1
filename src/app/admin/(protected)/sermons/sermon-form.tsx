@@ -16,18 +16,18 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { localeNames, locales, type Locale } from "@/i18n/routing";
 import { buildSlug } from "@/lib/slugify";
-import type { KhutbahFormState } from "./actions";
-import { KhutbahPreviewDialog } from "./khutbah-preview-dialog";
+import type { SermonFormState } from "./actions";
+import { SermonPreviewDialog } from "./sermon-preview-dialog";
 import { PublishStatusField } from "../publish-status-field";
 import type { PublishFormStatus } from "@/lib/published";
 
 type Translation = { locale: string; title: string; summary: string; body: string };
 
-export function KhutbahForm({
+export function SermonForm({
   action,
   initial,
 }: {
-  action: (state: KhutbahFormState, formData: FormData) => Promise<KhutbahFormState>;
+  action: (state: SermonFormState, formData: FormData) => Promise<SermonFormState>;
   initial?: {
     slug: string;
     date: string;
@@ -79,7 +79,7 @@ export function KhutbahForm({
               name="slug"
               value={slug}
               onChange={(e) => setSlug(e.target.value)}
-              placeholder="tema-hutby-2026-07-18"
+              placeholder="tema-propovedi-2026-07-18"
               required
               className="font-mono"
             />
@@ -129,7 +129,7 @@ export function KhutbahForm({
           </SelectContent>
         </Select>
         <p className="text-xs text-muted-foreground">
-          На этом языке хутба показывается там, где перевод ещё не готов.
+          На этом языке проповедь показывается там, где перевод ещё не готов.
         </p>
       </div>
 
@@ -177,23 +177,23 @@ export function KhutbahForm({
                   name={`summary_${l}`}
                   value={fields[l].summary}
                   onChange={(e) => updateField(l, "summary", e.target.value)}
-                  placeholder="1-2 предложения — показывается в списке хутб"
+                  placeholder="1-2 предложения — показывается в списке проповедей"
                   rows={2}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
-                <Label htmlFor={`body_${l}`}>Текст хутбы</Label>
+                <Label htmlFor={`body_${l}`}>Текст проповеди</Label>
                 <Textarea
                   id={`body_${l}`}
                   name={`body_${l}`}
                   value={fields[l].body}
                   onChange={(e) => updateField(l, "body", e.target.value)}
-                  placeholder="Полный текст хутбы на этом языке"
+                  placeholder="Полный текст проповеди на этом языке"
                   rows={14}
                 />
               </div>
               <div>
-                <KhutbahPreviewDialog
+                <SermonPreviewDialog
                   locale={l}
                   date={date}
                   title={fields[l].title}

@@ -9,9 +9,9 @@ import {
   getServerSavedSlugsSnapshot,
   subscribeSavedSlugs,
   toggleSavedSlug,
-} from "@/lib/saved-khutbahs";
+} from "@/lib/saved-sermons";
 
-export function SaveKhutbahButton({
+export function SaveSermonButton({
   slug,
   labels,
 }: {

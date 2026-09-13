@@ -11,8 +11,8 @@ const adapter = new PrismaLibSql({
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  await prisma.khutbahTranslation.deleteMany();
-  await prisma.khutbah.deleteMany();
+  await prisma.sermonTranslation.deleteMany();
+  await prisma.sermon.deleteMany();
   await prisma.contentTranslation.deleteMany();
   await prisma.contentBlock.deleteMany();
   await prisma.quranAyahTranslation.deleteMany();
@@ -58,7 +58,7 @@ async function main() {
     console.log(`Admin user ready: ${a.email}`);
   }
 
-  const khutbahs = [
+  const sermons = [
     {
       mosqueSlug: "baiken",
       slug: "shukr-2026-07-03",
@@ -83,7 +83,7 @@ async function main() {
           locale: "en",
           title: "Gratitude — Half of Faith",
           summary:
-            "A khutbah on how gratitude to Allah for His blessings brings peace to the heart and barakah into our lives.",
+            "A sermon on how gratitude to Allah for His blessings brings peace to the heart and barakah into our lives.",
           body: "Bismillahir-Rahmanir-Rahim.\n\nDear brothers and sisters! Allah the Almighty has given us countless blessings: health, family, our daily bread, the very air we breathe. Being grateful for these blessings is an essential part of faith.\n\nThe Prophet ﷺ said: \"He who does not thank people has not thanked Allah.\" Gratitude is not only words — it is a feeling in the heart and action of our limbs.\n\nHow do we give thanks? First, by acknowledging the blessing. Second, by verbally thanking Allah. Third, by using that blessing in a way that pleases Allah.\n\nA believer who is patient in hardship and grateful in ease succeeds in both states — for, as the Prophet ﷺ said, all of it is good for the believer.\n\nMay Allah make us among the grateful.",
         },
       ],
@@ -138,7 +138,7 @@ async function main() {
         {
           locale: "en",
           title: "Patience — The Path to Success",
-          summary: "A khutbah on the reward and meaning of patience in the face of life's trials.",
+          summary: "A sermon on the reward and meaning of patience in the face of life's trials.",
           body: "Bismillahir-Rahmanir-Rahim.\n\nLife is full of trials. Allah the Almighty tests us through various circumstances: health, wealth, and the loss of loved ones.\n\nThe Noble Qur'an says: \"Indeed, the patient will be given their reward without account.\" Patience means not complaining in hardship, not falling into disbelief, and being content with Allah's decree.\n\nThere are three kinds of patience: patience in performing worship, patience in avoiding sin, and patience with the hardships of fate.\n\nThe Prophet ﷺ endured many trials in his life with patience. Let us follow this example as well.\n\nMay Allah the Almighty grant all of us patience and relief.",
         },
       ],
@@ -167,7 +167,7 @@ async function main() {
           locale: "en",
           title: "Kindness to Parents",
           summary:
-            "A khutbah on our duty toward our parents and the reward for strengthening ties with them.",
+            "A sermon on our duty toward our parents and the reward for strengthening ties with them.",
           body: "Bismillahir-Rahmanir-Rahim.\n\nDear brothers and sisters! In the Qur'an, Allah the Almighty commands kindness to parents immediately after commanding worship of Him alone: \"Your Lord has decreed that you worship none but Him, and that you be kind to parents\" (Surah Al-Isra, 23).\n\nWhen a companion asked the Prophet ﷺ who most deserved his good companionship, he answered three times, \"Your mother,\" and only on the fourth time said, \"Your father.\" This shows how exalted the status of the mother is in Islam.\n\nKindness to parents is not only material support. It is speaking gently, never raising one's voice at them, listening to their counsel, and caring for them in old age.\n\nThe Prophet ﷺ said three times: \"Humiliated is the one who found one or both of his parents in old age and it did not lead him into Paradise.\" This is a stern reminder of how central our parents' pleasure is to our life in the Hereafter.\n\nLet us start today by calling our parents more often, giving them our time, and remembering them in our prayers.\n\nMay Allah make all of us dutiful toward our parents.",
         },
       ],
@@ -196,7 +196,7 @@ async function main() {
           locale: "en",
           title: "Trust and Truthfulness",
           summary:
-            "A khutbah on the importance of honoring what is entrusted to us and being truthful in trade, speech, and deeds.",
+            "A sermon on the importance of honoring what is entrusted to us and being truthful in trade, speech, and deeds.",
           body: "Bismillahir-Rahmanir-Rahim.\n\nDear brothers and sisters! Trustworthiness (amanah) and truthfulness are inseparable qualities of a believer. Allah the Almighty says: \"Indeed, Allah commands you to render trusts to whom they are due\" (Surah An-Nisa, 58).\n\nThe Prophet ﷺ said: \"The truthful, trustworthy merchant will be with the prophets, the truthful, and the martyrs.\" This shows how highly honesty in trade is valued.\n\nTrust is not only about material things. Keeping promises, guarding secrets, using one's position fairly, and not cheating in measure and weight — all of this falls under amanah.\n\nThe Prophet ﷺ warned that among the signs of a hypocrite are lying in speech, breaking promises, and betraying what is entrusted. Let us strive to stay far from these traits.\n\nTruthfulness, even when the path is narrow, ultimately saves a person. Falsehood, even when it seems easy, leads to ruin.\n\nMay Allah make us among His servants who are trustworthy and truthful.",
         },
       ],
@@ -222,7 +222,7 @@ async function main() {
         {
           locale: "en",
           title: "Guarding Against Backbiting",
-          summary: "A khutbah on the harm of speaking ill of others behind their backs and how to avoid this sin.",
+          summary: "A sermon on the harm of speaking ill of others behind their backs and how to avoid this sin.",
           body: "Bismillahir-Rahmanir-Rahim.\n\nDear brothers and sisters! Backbiting (gheebah) — mentioning someone in their absence in a way they would dislike — is one of the major sins strictly forbidden in Islam. Allah the Almighty compares it in the Qur'an to eating the flesh of one's dead brother: \"Would one of you like to eat the flesh of his dead brother? You would detest it\" (Surah Al-Hujurat, 12).\n\nThis comparison shows how foreign and repulsive backbiting is to the human soul. Yet today this sin is common in everyday conversation, even disguised as humor.\n\nThe Prophet ﷺ said: \"A Muslim is the one from whose tongue and hand other Muslims are safe.\" We must watch our tongues and what we write, especially on social media.\n\nOne can guard against backbiting by refusing to listen to ill words about someone, changing the subject, or defending that person with a kind word. If we have already spoken ill of someone, we should seek forgiveness and repent.\n\nGuarding one's tongue is a sign of faith. Let us speak less, and speak with more thought.\n\nMay Allah make us among those who guard their tongues.",
         },
       ],
@@ -231,12 +231,12 @@ async function main() {
 
   const mosqueBySlug = { baiken, "abu-bakr": abuBakr } as const;
   // Fixed past date so seeded items always show as published, regardless of
-  // when `db:seed` actually runs (some khutbah `date` values are in the
+  // when `db:seed` actually runs (some sermon `date` values are in the
   // future relative to "today" for demo purposes).
   const SEED_PUBLISHED_AT = new Date("2026-01-01T00:00:00Z");
 
-  for (const k of khutbahs) {
-    await prisma.khutbah.create({
+  for (const k of sermons) {
+    await prisma.sermon.create({
       data: {
         mosqueId: mosqueBySlug[k.mosqueSlug as keyof typeof mosqueBySlug].id,
         slug: k.slug,
@@ -247,7 +247,7 @@ async function main() {
       },
     });
   }
-  console.log(`Seeded ${khutbahs.length} khutbahs (split across ${mosques.length} mosques)`);
+  console.log(`Seeded ${sermons.length} sermons (split across ${mosques.length} mosques)`);
 
   for (const ayah of alKahfAyahs) {
     await prisma.quranAyah.create({
@@ -290,7 +290,7 @@ async function main() {
       translations: [
         { locale: "kk", title: "Мешітке ерте келу", body: "Хұтба басталғанға дейін мешітке ерте келіп, дұға мен зікірмен уақыт өткізу үлкен сауапты іс." },
         { locale: "ru", title: "Прийти в мечеть заблаговременно", body: "Прийти в мечеть заранее, до начала хутбы, и провести время в мольбе и поминании Аллаха — большое благо." },
-        { locale: "en", title: "Come to the mosque early", body: "Arriving at the mosque well before the khutbah begins, spending the time in supplication and remembrance, carries great reward." },
+        { locale: "en", title: "Come to the mosque early", body: "Arriving at the mosque well before the sermon begins, spending the time in supplication and remembrance, carries great reward." },
       ],
     },
     {

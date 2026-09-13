@@ -1,7 +1,7 @@
 {
   "Nav": {
     "home": "Home",
-    "khutbahs": "Khutbahs",
+    "sermons": "Sermons",
     "sunnah": "Sunnahs of Friday",
     "recommendedActions": "Recommended Actions",
     "reminders": "Reminders",
@@ -13,29 +13,29 @@
   "Home": {
     "badge": "Jumma Mubarak",
     "title": "Jumma Time",
-    "subtitle": "Understand and keep the Friday khutbah in Kazakh, Russian and English",
-    "description": "Scan the QR code at the mosque stand or pick a language to read khutbahs, the sunnahs of Friday, and helpful reminders.",
-    "browseCta": "Browse khutbahs",
+    "subtitle": "Understand and keep the Friday sermon in Kazakh, Russian and English",
+    "description": "Scan the QR code at the mosque stand or pick a language to read sermons, the sunnahs of Friday, and helpful reminders.",
+    "browseCta": "Browse sermons",
     "qrCta": "Show mosque QR code",
     "sectionsTitle": "Sections",
-    "latestKhutbahTitle": "This week's khutbah",
+    "latestSermonTitle": "This week's sermon",
   "imamLabel": "Imam",
   "officialBadge": "Official mosque page"
   },
-  "Khutbahs": {
-    "title": "Khutbah catalog",
+  "Sermons": {
+    "title": "Sermon catalog",
     "subtitle": "Friday sermons translated into Kazakh, Russian and English",
     "searchPlaceholder": "Search by title or date...",
-    "empty": "No khutbahs found",
-    "readMore": "Read khutbah",
+    "empty": "No sermons found",
+    "readMore": "Read sermon",
     "dateLabel": "Date"
   },
-  "KhutbahDetail": {
-    "back": "Back to khutbahs",
+  "SermonDetail": {
+    "back": "Back to sermons",
     "save": "Save",
     "unsave": "Remove from saved",
-    "savedToast": "Khutbah saved",
-    "unsavedToast": "Khutbah removed from saved",
+    "savedToast": "Sermon saved",
+    "unsavedToast": "Sermon removed from saved",
     "originalNote": "The original was delivered in Kazakh. Translation provided by the mosque.",
     "notAvailable": "Translation for this language isn't ready yet. Showing the original.",
     "share": "Share",
@@ -67,13 +67,13 @@
     "subtitle": "Why Friday is the best day of the week"
   },
   "Saved": {
-    "title": "Saved khutbahs",
-    "empty": "You haven't saved any khutbahs yet",
+    "title": "Saved sermons",
+    "empty": "You haven't saved any sermons yet",
     "browseCta": "Go to catalog",
-    "inAppWarning": "Note: saved khutbahs are only stored in this browser. If you opened this site from Instagram, Telegram, or another app, open it in an external browser (Safari, Chrome) to avoid losing your saved items."
+    "inAppWarning": "Note: saved sermons are only stored in this browser. If you opened this site from Instagram, Telegram, or another app, open it in an external browser (Safari, Chrome) to avoid losing your saved items."
   },
   "Sections": {
-    "khutbahs": "Read Friday sermons in three languages",
+    "sermons": "Read Friday sermons in three languages",
     "sunnah": "Recommended acts for Friday",
     "recommendedActions": "A helpful list of things to do today",
     "reminders": "Don't miss what matters",

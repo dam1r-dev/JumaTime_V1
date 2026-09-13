@@ -11,7 +11,7 @@ export async function SiteHeader({ locale }: { locale: Locale }) {
 
   const links = [
     { href: "/", label: t("home") },
-    { href: "/khutbahs", label: t("khutbahs") },
+    { href: "/sermons", label: t("sermons") },
     { href: "/sunnah", label: t("sunnah") },
     { href: "/recommended-actions", label: t("recommendedActions") },
     { href: "/reminders", label: t("reminders") },

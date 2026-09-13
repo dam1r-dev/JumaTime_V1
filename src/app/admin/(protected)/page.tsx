@@ -8,8 +8,8 @@ export default async function AdminDashboardPage() {
   const session = await auth();
   const mosqueId = session!.user.mosqueId;
 
-  const [khutbahCount, contentCounts] = await Promise.all([
-    prisma.khutbah.count({ where: { mosqueId } }),
+  const [sermonCount, contentCounts] = await Promise.all([
+    prisma.sermon.count({ where: { mosqueId } }),
     prisma.contentBlock.groupBy({ by: ["category"], where: { mosqueId }, _count: true }),
   ]);
 
@@ -20,15 +20,15 @@ export default async function AdminDashboardPage() {
     <div>
       <h1 className="text-2xl font-bold">Обзор</h1>
       <p className="mt-1 text-muted-foreground">
-        Управление хутбами и материалами платформы Jumma Time
+        Управление проповедями и материалами платформы Jumma Time
       </p>
 
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm text-muted-foreground">Хутбы</CardTitle>
+            <CardTitle className="text-sm text-muted-foreground">Проповеди</CardTitle>
           </CardHeader>
-          <CardContent className="text-3xl font-bold">{khutbahCount}</CardContent>
+          <CardContent className="text-3xl font-bold">{sermonCount}</CardContent>
         </Card>
         <Card>
           <CardHeader className="pb-2">
@@ -55,7 +55,7 @@ export default async function AdminDashboardPage() {
       <div className="mt-8 flex flex-wrap gap-3">
         <Button
           className="bg-[var(--jt-green-900)] hover:bg-[var(--jt-green-800)]"
-          render={<Link href="/admin/khutbahs/new">Новая хутба</Link>}
+          render={<Link href="/admin/sermons/new">Новая проповедь</Link>}
         />
         <Button variant="outline" render={<Link href="/admin/content/new">Новый материал</Link>} />
       </div>

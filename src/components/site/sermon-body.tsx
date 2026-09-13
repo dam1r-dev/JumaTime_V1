@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 const FONT_SIZES_PX = [16, 18, 20, 22, 24, 28, 32];
 const DEFAULT_SIZE_INDEX = 2;
-const STORAGE_KEY = "jumma-time:khutbah-font-size-index";
+const STORAGE_KEY = "jumma-time:sermon-font-size-index";
 const listeners = new Set<() => void>();
 
 function readSizeIndex(): number {
@@ -37,7 +37,7 @@ function getServerSnapshot() {
   return DEFAULT_SIZE_INDEX;
 }
 
-export function KhutbahBody({
+export function SermonBody({
   text,
   labels,
 }: {

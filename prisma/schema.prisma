@@ -29,7 +29,7 @@ model Mosque {
   createdAt DateTime @default(now())
 
   adminUsers    AdminUser[]
-  khutbahs      Khutbah[]
+  sermons       Sermon[]
   contentBlocks ContentBlock[]
 }
 
@@ -44,7 +44,7 @@ model AdminUser {
   mosque Mosque @relation(fields: [mosqueId], references: [id])
 }
 
-model Khutbah {
+model Sermon {
   id            String    @id @default(cuid())
   mosqueId      String
   slug          String    @unique
@@ -59,22 +59,22 @@ model Khutbah {
   updatedAt     DateTime  @updatedAt
 
   mosque       Mosque @relation(fields: [mosqueId], references: [id])
-  translations KhutbahTranslation[]
+  translations SermonTranslation[]
 
   @@index([mosqueId, date])
 }
 
-model KhutbahTranslation {
+model SermonTranslation {
   id        String  @id @default(cuid())
-  khutbahId String
+  sermonId  String
   locale    String
   title     String
   summary   String
   body      String
 
-  khutbah Khutbah @relation(fields: [khutbahId], references: [id], onDelete: Cascade)
+  sermon Sermon @relation(fields: [sermonId], references: [id], onDelete: Cascade)
 
-  @@unique([khutbahId, locale])
+  @@unique([sermonId, locale])
 }
 
 model QuranAyah {
@@ -105,7 +105,7 @@ model ContentBlock {
   mosqueId    String
   category    ContentCategory
   order       Int             @default(0)
-  // See Khutbah.publishedAt — same draft/scheduled/published gate.
+  // See Sermon.publishedAt — same draft/scheduled/published gate.
   publishedAt DateTime?
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt

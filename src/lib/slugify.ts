@@ -22,7 +22,7 @@ export function slugify(text: string): string {
     .replace(/-+/g, "-");
 }
 
-/** Builds a khutbah-style slug ("topic-words-2026-07-18") from a title and an ISO date. */
+/** Builds a sermon-style slug ("topic-words-2026-07-18") from a title and an ISO date. */
 export function buildSlug(title: string, isoDate: string, maxWords = 4): string {
   const words = slugify(title).split("-").filter(Boolean).slice(0, maxWords);
   return [...words, isoDate].filter(Boolean).join("-");

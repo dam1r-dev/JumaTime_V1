@@ -7,12 +7,12 @@ import { prisma } from "@/lib/prisma";
 import { pickTranslation, formatDate, estimateReadMinutes } from "@/lib/i18n-content";
 import { getMosques, getCurrentMosque } from "@/lib/mosque";
 import { publishedWhere } from "@/lib/published";
-import { SaveKhutbahButton } from "@/components/site/save-khutbah-button";
+import { SaveSermonButton } from "@/components/site/save-sermon-button";
 import { ShareButton } from "@/components/site/share-button";
 import { PrintButton } from "@/components/site/print-button";
-import { KhutbahBody } from "@/components/site/khutbah-body";
+import { SermonBody } from "@/components/site/sermon-body";
 
-export default async function KhutbahDetailPage({
+export default async function SermonDetailPage({
   params,
 }: {
   params: Promise<{ locale: string; slug: string }>;
@@ -23,19 +23,19 @@ export default async function KhutbahDetailPage({
 
   const mosque = await getCurrentMosque(await getMosques());
 
-  const [t, khutbah] = await Promise.all([
-    getTranslations({ locale, namespace: "KhutbahDetail" }),
+  const [t, sermon] = await Promise.all([
+    getTranslations({ locale, namespace: "SermonDetail" }),
     mosque
-      ? prisma.khutbah.findFirst({
+      ? prisma.sermon.findFirst({
           where: { slug, ...publishedWhere(), mosqueId: mosque.id },
           include: { translations: true },
         })
       : null,
   ]);
 
-  if (!khutbah) notFound();
+  if (!sermon) notFound();
 
-  const picked = pickTranslation(khutbah.translations, l, khutbah.originalLocale);
+  const picked = pickTranslation(sermon.translations, l, sermon.originalLocale);
   if (!picked) notFound();
 
   const { translation, isFallback } = picked;
@@ -43,7 +43,7 @@ export default async function KhutbahDetailPage({
   return (
     <article className="mx-auto max-w-3xl px-4 py-10 print:max-w-none print:bg-white print:px-8">
       <Link
-        href="/khutbahs"
+        href="/sermons"
         className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground print:hidden"
       >
         <ArrowLeft className="size-4" />
@@ -51,7 +51,7 @@ export default async function KhutbahDetailPage({
       </Link>
 
       <div className="flex flex-wrap items-center gap-2 text-sm text-[var(--jt-gold-600)] print:text-black">
-        <span>{formatDate(khutbah.date, l)}</span>
+        <span>{formatDate(sermon.date, l)}</span>
         <span className="text-muted-foreground print:hidden">·</span>
         <span className="text-muted-foreground print:hidden">
           {estimateReadMinutes(translation.body)} min
@@ -72,8 +72,8 @@ export default async function KhutbahDetailPage({
       )}
 
       <div className="my-6 flex flex-wrap gap-3 print:hidden">
-        <SaveKhutbahButton
-          slug={khutbah.slug}
+        <SaveSermonButton
+          slug={sermon.slug}
           labels={{
             save: t("save"),
             unsave: t("unsave"),
@@ -85,7 +85,7 @@ export default async function KhutbahDetailPage({
         <PrintButton label={t("print")} />
       </div>
 
-      <KhutbahBody
+      <SermonBody
         text={translation.body}
         labels={{ decrease: t("fontDecrease"), increase: t("fontIncrease") }}
       />

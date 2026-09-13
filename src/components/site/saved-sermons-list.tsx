@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { formatDate } from "@/lib/i18n-content";
-import { getSavedSlugs } from "@/lib/saved-khutbahs";
+import { getSavedSlugs } from "@/lib/saved-sermons";
 
 type Item = { slug: string; date: string; title: string; summary: string };
 
-export function SavedKhutbahsList({
+export function SavedSermonsList({
   locale,
   emptyLabel,
   browseCtaLabel,
@@ -24,7 +24,7 @@ export function SavedKhutbahsList({
     const result =
       slugs.length === 0
         ? Promise.resolve({ items: [] as Item[] })
-        : fetch(`/api/khutbahs?locale=${locale}&slugs=${slugs.join(",")}`).then((res) =>
+        : fetch(`/api/sermons?locale=${locale}&slugs=${slugs.join(",")}`).then((res) =>
             res.json()
           );
     result.then((data) => setItems(data.items)).catch(() => setItems([]));
@@ -37,7 +37,7 @@ export function SavedKhutbahsList({
       <div className="py-16 text-center">
         <p className="text-muted-foreground">{emptyLabel}</p>
         <Link
-          href="/khutbahs"
+          href="/sermons"
           className="mt-4 inline-block text-sm font-medium text-[var(--jt-green-900)] underline underline-offset-4"
         >
           {browseCtaLabel}
@@ -51,7 +51,7 @@ export function SavedKhutbahsList({
       {items.map((item) => (
         <Link
           key={item.slug}
-          href={`/khutbahs/${item.slug}`}
+          href={`/sermons/${item.slug}`}
           className="group rounded-2xl border border-border bg-card p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md hover:border-[var(--jt-gold-500)]"
         >
           <p className="text-sm text-[var(--jt-gold-600)]">

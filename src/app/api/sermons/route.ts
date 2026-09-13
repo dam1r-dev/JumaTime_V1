@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ items: [] });
   }
 
-  const khutbahs = await prisma.khutbah.findMany({
+  const sermons = await prisma.sermon.findMany({
     where: {
       ...publishedWhere(),
       mosqueId: mosque.id,
@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
     include: { translations: true },
   });
 
-  const items = khutbahs
+  const items = sermons
     .map((k) => {
       const picked = pickTranslation(k.translations, locale, k.originalLocale);
       if (!picked) return null;

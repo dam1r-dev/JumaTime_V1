@@ -8,9 +8,9 @@ import { locales } from "@/i18n/routing";
 import { auth } from "@/auth";
 import { resolvePublishedAtFromForm } from "@/lib/published";
 
-export type KhutbahFormState = { error?: string } | undefined;
+export type SermonFormState = { error?: string } | undefined;
 
-const khutbahSchema = z.object({
+const sermonSchema = z.object({
   slug: z
     .string()
     .trim()
@@ -31,14 +31,14 @@ function extractTranslations(formData: FormData) {
     .filter((t) => t.title.length > 0 && t.body.length > 0);
 }
 
-export async function createKhutbah(
-  _prevState: KhutbahFormState,
+export async function createSermon(
+  _prevState: SermonFormState,
   formData: FormData
-): Promise<KhutbahFormState> {
+): Promise<SermonFormState> {
   const session = await auth();
   if (!session) redirect("/admin/login");
 
-  const parsed = khutbahSchema.safeParse({
+  const parsed = sermonSchema.safeParse({
     slug: formData.get("slug"),
     date: formData.get("date"),
     originalLocale: formData.get("originalLocale"),
@@ -61,12 +61,12 @@ export async function createKhutbah(
     return { error: "Заполните хотя бы один язык (заголовок и текст)" };
   }
 
-  const existing = await prisma.khutbah.findUnique({ where: { slug: parsed.data.slug } });
+  const existing = await prisma.sermon.findUnique({ where: { slug: parsed.data.slug } });
   if (existing) {
-    return { error: "Хутба с таким URL уже существует" };
+    return { error: "Проповедь с таким URL уже существует" };
   }
 
-  await prisma.khutbah.create({
+  await prisma.sermon.create({
     data: {
       mosqueId: session.user.mosqueId,
       slug: parsed.data.slug,
@@ -77,26 +77,26 @@ export async function createKhutbah(
     },
   });
 
-  revalidatePath("/admin/khutbahs");
-  redirect("/admin/khutbahs");
+  revalidatePath("/admin/sermons");
+  redirect("/admin/sermons");
 }
 
-export async function updateKhutbah(
+export async function updateSermon(
   id: string,
-  _prevState: KhutbahFormState,
+  _prevState: SermonFormState,
   formData: FormData
-): Promise<KhutbahFormState> {
+): Promise<SermonFormState> {
   const session = await auth();
   if (!session) redirect("/admin/login");
 
-  const owned = await prisma.khutbah.findFirst({
+  const owned = await prisma.sermon.findFirst({
     where: { id, mosqueId: session.user.mosqueId },
   });
   if (!owned) {
-    return { error: "Хутба не найдена" };
+    return { error: "Проповедь не найдена" };
   }
 
-  const parsed = khutbahSchema.safeParse({
+  const parsed = sermonSchema.safeParse({
     slug: formData.get("slug"),
     date: formData.get("date"),
     originalLocale: formData.get("originalLocale"),
@@ -119,16 +119,16 @@ export async function updateKhutbah(
     return { error: "Заполните хотя бы один язык (заголовок и текст)" };
   }
 
-  const conflict = await prisma.khutbah.findFirst({
+  const conflict = await prisma.sermon.findFirst({
     where: { slug: parsed.data.slug, NOT: { id } },
   });
   if (conflict) {
-    return { error: "Хутба с таким URL уже существует" };
+    return { error: "Проповедь с таким URL уже существует" };
   }
 
   await prisma.$transaction([
-    prisma.khutbahTranslation.deleteMany({ where: { khutbahId: id } }),
-    prisma.khutbah.update({
+    prisma.sermonTranslation.deleteMany({ where: { sermonId: id } }),
+    prisma.sermon.update({
       where: { id },
       data: {
         slug: parsed.data.slug,
@@ -140,15 +140,15 @@ export async function updateKhutbah(
     }),
   ]);
 
-  revalidatePath("/admin/khutbahs");
-  redirect("/admin/khutbahs");
+  revalidatePath("/admin/sermons");
+  redirect("/admin/sermons");
 }
 
-export async function deleteKhutbah(id: string) {
+export async function deleteSermon(id: string) {
   const session = await auth();
   if (!session) redirect("/admin/login");
 
-  await prisma.khutbah.deleteMany({ where: { id, mosqueId: session.user.mosqueId } });
-  revalidatePath("/admin/khutbahs");
-  redirect("/admin/khutbahs");
+  await prisma.sermon.deleteMany({ where: { id, mosqueId: session.user.mosqueId } });
+  revalidatePath("/admin/sermons");
+  redirect("/admin/sermons");
 }
