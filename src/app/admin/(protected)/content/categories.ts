@@ -9,7 +9,7 @@ export const CATEGORIES = [
 export const CATEGORY_LABELS: Record<(typeof CATEGORIES)[number], string> = {
   SUNNAH: "Сунны пятницы",
   RECOMMENDED_ACTION: "Рекомендуемые действия",
-  REMINDER: "Напоминания",
+  REMINDER: "Факты",
   FRIDAY_VIRTUE: "Достоинства пятницы",
   AL_KAHF: "Сура Аль-Кахф",
 };

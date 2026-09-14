@@ -13,9 +13,6 @@ const STATIC_PATHS = [
   "sermons",
   "al-kahf",
   "friday-virtues",
-  "recommended-actions",
-  "reminders",
-  "sunnah",
 ] as const;
 
 async function getBaseUrl() {

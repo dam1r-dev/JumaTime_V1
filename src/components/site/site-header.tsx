@@ -12,9 +12,6 @@ export async function SiteHeader({ locale }: { locale: Locale }) {
   const links = [
     { href: "/", label: t("home") },
     { href: "/sermons", label: t("sermons") },
-    { href: "/sunnah", label: t("sunnah") },
-    { href: "/recommended-actions", label: t("recommendedActions") },
-    { href: "/reminders", label: t("reminders") },
     { href: "/al-kahf", label: t("alKahf") },
     { href: "/friday-virtues", label: t("fridayVirtues") },
     { href: "/saved", label: t("saved") },

@@ -3,9 +3,6 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import {
   BookOpen,
   CalendarCheck,
-  ListChecks,
-  Bell,
-  Sparkles,
   BookMarked,
   QrCode,
   Building2,
@@ -54,9 +51,6 @@ export default async function HomePage({
 
   const sections = [
     { href: "/sermons", icon: BookOpen, title: t("sermons"), description: sectionDesc("sermons") },
-    { href: "/sunnah", icon: Sparkles, title: t("sunnah"), description: sectionDesc("sunnah") },
-    { href: "/recommended-actions", icon: ListChecks, title: t("recommendedActions"), description: sectionDesc("recommendedActions") },
-    { href: "/reminders", icon: Bell, title: t("reminders"), description: sectionDesc("reminders") },
     { href: "/al-kahf", icon: BookMarked, title: t("alKahf"), description: sectionDesc("alKahf") },
     { href: "/friday-virtues", icon: CalendarCheck, title: t("fridayVirtues"), description: sectionDesc("fridayVirtues") },
   ];

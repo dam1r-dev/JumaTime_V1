@@ -2,9 +2,6 @@
   "Nav": {
     "home": "Home",
     "sermons": "Sermons",
-    "sunnah": "Sunnahs of Friday",
-    "recommendedActions": "Recommended Actions",
-    "reminders": "Reminders",
     "alKahf": "Surah Al-Kahf",
     "fridayVirtues": "Virtues of Friday",
     "saved": "Saved",
@@ -43,18 +40,6 @@
   "fontDecrease": "Decrease font size",
   "fontIncrease": "Increase font size"
   },
-  "Sunnah": {
-    "title": "Sunnahs of Friday",
-    "subtitle": "Recommended acts narrated from the Prophet ﷺ"
-  },
-  "RecommendedActions": {
-    "title": "Recommended Actions",
-    "subtitle": "What is good to do on Friday"
-  },
-  "Reminders": {
-    "title": "Reminders",
-    "subtitle": "Important reminders and events"
-  },
   "AlKahf": {
     "title": "Surah Al-Kahf",
     "subtitle": "Reading Surah Al-Kahf every Friday — a light between the two Fridays",
@@ -64,7 +49,11 @@
   },
   "FridayVirtues": {
     "title": "Virtues of Friday",
-    "subtitle": "Why Friday is the best day of the week"
+    "subtitle": "Why Friday is the best day of the week",
+    "tabVirtue": "Virtues",
+    "tabSunnah": "Sunnahs",
+    "tabRecommended": "Recommended",
+    "tabFacts": "Facts"
   },
   "Saved": {
     "title": "Saved sermons",
@@ -74,11 +63,8 @@
   },
   "Sections": {
     "sermons": "Read Friday sermons in three languages",
-    "sunnah": "Recommended acts for Friday",
-    "recommendedActions": "A helpful list of things to do today",
-    "reminders": "Don't miss what matters",
     "alKahf": "The surah text for Friday reading",
-    "fridayVirtues": "Why this day is special"
+    "fridayVirtues": "Virtues, sunnahs, recommended actions and facts about Friday"
   },
   "Footer": {
     "tagline": "A platform for mosques in Kazakhstan",
